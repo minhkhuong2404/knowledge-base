@@ -1,0 +1,32 @@
+<nav class="sidebar" [class.open]="isOpen()">
+  <div class="sidebar-header">
+    <span class="sidebar-title">Java Roadmap</span>
+  </div>
+
+  <div class="sidebar-nav">
+    @for (category of categories(); track category.name) {
+      <div class="category">
+        <button class="category-header" (click)="toggleCategory(category)" [attr.aria-expanded]="category.expanded">
+          <span class="category-icon">{{ category.icon }}</span>
+          <span class="category-name">{{ category.name }}</span>
+          <span class="chevron" [class.expanded]="category.expanded">›</span>
+        </button>
+
+        @if (category.expanded) {
+          <ul class="topic-list">
+            @for (topic of category.topics; track topic.slug) {
+              <li>
+                <a class="topic-link"
+                   [class.active]="activeSlug() === topic.slug"
+                   [routerLink]="['/learn', getCategoryRoute(category.name), topic.slug]"
+                   (click)="topicSelected.emit()">
+                  {{ topic.title }}
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    }
+  </div>
+</nav>

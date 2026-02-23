@@ -1,0 +1,43 @@
+@if (topic()) {
+  <article class="content-area">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a>
+      <span class="separator">/</span>
+      <span>{{ categoryName() }}</span>
+      <span class="separator">/</span>
+      <span class="current">{{ topic()!.title }}</span>
+    </nav>
+
+    <header class="topic-header">
+      <h1>{{ topic()!.title }}</h1>
+      <p class="description">{{ topic()!.description }}</p>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <h2 class="toc-title">On this page</h2>
+      <ul>
+        @for (section of topic()!.sections; track section.id) {
+          <li>
+            <a class="toc-link" [href]="'#' + section.id" (click)="scrollToSection($event, section.id)">
+              {{ section.title }}
+            </a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <div class="sections">
+      @for (section of topic()!.sections; track section.id) {
+        <section class="topic-section" [id]="section.id">
+          <h2>{{ section.title }}</h2>
+          <div class="section-content" [innerHTML]="section.content"></div>
+        </section>
+      }
+    </div>
+  </article>
+} @else {
+  <div class="not-found">
+    <h1>Topic Not Found</h1>
+    <p>The requested topic could not be found. Select a topic from the sidebar.</p>
+  </div>
+}

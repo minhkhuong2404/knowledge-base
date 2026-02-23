@@ -1,0 +1,28 @@
+<div class="layout">
+  <header class="top-bar">
+    <button class="menu-toggle" (click)="toggleSidebar()" aria-label="Toggle navigation">
+      <span class="hamburger"></span>
+    </button>
+    <a class="brand" routerLink="/">
+      <span class="brand-icon">☕</span>
+      <span class="brand-text">Java Knowledge Base</span>
+    </a>
+    <div class="header-spacer"></div>
+  </header>
+
+  <div class="main-layout">
+    <app-sidebar
+      [categories]="categories()"
+      [activeSlug]="currentSlug()"
+      [isOpen]="sidebarOpen()"
+      (topicSelected)="closeSidebar()" />
+
+    @if (sidebarOpen()) {
+      <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+    }
+
+    <main class="main-content">
+      <app-content [topic]="currentTopic()" [categoryName]="currentCategoryName()" />
+    </main>
+  </div>
+</div>
