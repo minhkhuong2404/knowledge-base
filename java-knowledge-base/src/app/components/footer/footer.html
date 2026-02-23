@@ -1,0 +1,39 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-column footer-brand">
+        <a routerLink="/" class="footer-logo">
+          <span>☕</span>
+          <span>Java Knowledge Base</span>
+        </a>
+        <p class="footer-tagline">Your comprehensive resource for mastering Java programming.</p>
+      </div>
+
+      <div class="footer-column">
+        <h4>Categories</h4>
+        @for (cat of categories.slice(0, 4); track cat.id) {
+          <a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>
+        }
+      </div>
+
+      <div class="footer-column">
+        <h4>More Topics</h4>
+        @for (cat of categories.slice(4); track cat.id) {
+          <a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>
+        }
+      </div>
+
+      <div class="footer-column">
+        <h4>Resources</h4>
+        <a href="https://docs.oracle.com/en/java/" target="_blank" rel="noopener">Oracle Java Docs</a>
+        <a href="https://openjdk.org/" target="_blank" rel="noopener">OpenJDK</a>
+        <a href="https://spring.io/docs" target="_blank" rel="noopener">Spring Docs</a>
+        <a href="https://dev.java/" target="_blank" rel="noopener">dev.java</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; {{ currentYear }} Java Knowledge Base. Built with Angular. For educational purposes.</p>
+    </div>
+  </div>
+</footer>

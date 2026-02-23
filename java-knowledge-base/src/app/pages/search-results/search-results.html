@@ -1,0 +1,51 @@
+<section class="search-hero">
+  <div class="container">
+    <a routerLink="/" class="back-link">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Back to Home
+    </a>
+    <h1>Search Results</h1>
+    @if (query) {
+      <p class="search-info">{{ results.length }} results for "<strong>{{ query }}</strong>"</p>
+    }
+  </div>
+</section>
+
+<section class="results-section">
+  <div class="container">
+    @if (results.length > 0) {
+      <div class="results-list">
+        @for (topic of results; track topic.id) {
+          <a [routerLink]="['/topic', topic.id]" class="result-card">
+            <div class="result-left">
+              <span class="result-icon">{{ topic.icon }}</span>
+            </div>
+            <div class="result-body">
+              <div class="result-header">
+                <h3>{{ topic.title }}</h3>
+                <span class="result-difficulty" [class]="getDifficultyClass(topic.difficulty)">{{ topic.difficulty }}</span>
+              </div>
+              <p class="result-category">{{ getCategoryName(topic.categoryId) }}</p>
+              <p class="result-desc">{{ topic.description }}</p>
+              <div class="result-tags">
+                @for (tag of topic.tags; track tag) {
+                  <span class="tag">{{ tag }}</span>
+                }
+              </div>
+            </div>
+          </a>
+        }
+      </div>
+    } @else if (query) {
+      <div class="no-results">
+        <h2>No results found</h2>
+        <p>Try searching for a different keyword or browse our <a routerLink="/">categories</a>.</p>
+      </div>
+    } @else {
+      <div class="no-results">
+        <h2>Enter a search term</h2>
+        <p>Use the search bar above to find Java topics.</p>
+      </div>
+    }
+  </div>
+</section>

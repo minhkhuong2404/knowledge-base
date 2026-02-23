@@ -1,0 +1,92 @@
+@if (topic) {
+  <section class="topic-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a routerLink="/">Home</a>
+        <span class="sep">/</span>
+        @if (category) {
+          <a [routerLink]="['/category', category.id]">{{ category.name }}</a>
+          <span class="sep">/</span>
+        }
+        <span class="current">{{ topic.title }}</span>
+      </div>
+      <div class="topic-meta">
+        <span class="topic-icon">{{ topic.icon }}</span>
+        <div>
+          <h1>{{ topic.title }}</h1>
+          <p class="topic-desc">{{ topic.description }}</p>
+          <div class="meta-row">
+            <span class="difficulty" [class]="getDifficultyClass(topic.difficulty)">{{ topic.difficulty }}</span>
+            <div class="tags">
+              @for (tag of topic.tags; track tag) {
+                <span class="tag">{{ tag }}</span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="content-layout">
+    <div class="container">
+      <div class="content-grid">
+        <main class="article-content">
+          @for (section of topic.content; track section.heading) {
+            <div class="content-section">
+              <h2>{{ section.heading }}</h2>
+              <p>{{ section.body }}</p>
+            </div>
+          }
+
+          @if (topic.codeExamples && topic.codeExamples.length > 0) {
+            <div class="code-examples">
+              <h2>Code Examples</h2>
+              @for (example of topic.codeExamples; track example.title) {
+                <div class="code-block">
+                  <div class="code-header">
+                    <span class="code-title">{{ example.title }}</span>
+                    <span class="code-lang">{{ example.language }}</span>
+                  </div>
+                  <pre><code>{{ example.code }}</code></pre>
+                </div>
+              }
+            </div>
+          }
+        </main>
+
+        <aside class="sidebar">
+          <div class="toc">
+            <h3>On This Page</h3>
+            @for (section of topic.content; track section.heading) {
+              <a class="toc-link">{{ section.heading }}</a>
+            }
+            @if (topic.codeExamples && topic.codeExamples.length > 0) {
+              <a class="toc-link">Code Examples</a>
+            }
+          </div>
+
+          @if (relatedTopics.length > 0) {
+            <div class="related">
+              <h3>Related Topics</h3>
+              @for (related of relatedTopics; track related.id) {
+                <a [routerLink]="['/topic', related.id]" class="related-link">
+                  <span class="related-icon">{{ related.icon }}</span>
+                  <span>{{ related.title }}</span>
+                </a>
+              }
+            </div>
+          }
+        </aside>
+      </div>
+    </div>
+  </div>
+} @else {
+  <section class="not-found">
+    <div class="container">
+      <h1>Topic Not Found</h1>
+      <p>The topic you're looking for doesn't exist.</p>
+      <a routerLink="/" class="back-link-btn">Back to Home</a>
+    </div>
+  </section>
+}
