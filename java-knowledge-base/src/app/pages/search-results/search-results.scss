@@ -14,7 +14,9 @@
       font-size: 13px;
     }
 
-    &:hover { color: #111827; }
+    &:hover {
+      color: #111827;
+    }
   }
 
   h1 {
@@ -33,7 +35,9 @@
       color: #9ca3af;
     }
 
-    strong { color: #111827; }
+    strong {
+      color: #111827;
+    }
   }
 }
 
@@ -52,7 +56,9 @@
 
 .result-card {
   border-radius: 12px !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
   cursor: pointer;
 
   &:hover {
@@ -78,7 +84,7 @@
 
   .result-category {
     font-size: 0.78rem;
-    color: #E76F00;
+    color: #e76f00;
     font-weight: 500;
     margin-bottom: 0.35rem;
 
@@ -114,10 +120,12 @@
     color: #6b7280;
 
     a {
-      color: #5382A1;
+      color: #5382a1;
       text-decoration: none;
       font-weight: 500;
-      &:hover { color: #E76F00; }
+      &:hover {
+        color: #e76f00;
+      }
     }
   }
 }

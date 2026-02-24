@@ -9,13 +9,13 @@
   margin-bottom: 1.5rem;
 
   a {
-    color: #5382A1;
+    color: #5382a1;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.15s;
 
     &:hover {
-      color: #E76F00;
+      color: #e76f00;
     }
   }
 
@@ -117,7 +117,7 @@
               width: 6px;
               height: 6px;
               border-radius: 50%;
-              background: #5382A1;
+              background: #5382a1;
             }
 
             strong {
@@ -206,8 +206,8 @@
     cursor: pointer;
 
     &:hover {
-      color: #E76F00;
-      border-left-color: #E76F00;
+      color: #e76f00;
+      border-left-color: #e76f00;
       background: rgba(231, 111, 0, 0.03);
     }
   }
@@ -221,12 +221,12 @@
     transition: all 0.15s;
 
     &:hover {
-      color: #E76F00;
+      color: #e76f00;
       background: rgba(231, 111, 0, 0.04);
 
       .link-arrow {
         transform: translateX(2px);
-        color: #E76F00;
+        color: #e76f00;
       }
     }
 
@@ -275,7 +275,11 @@
   }
 
   .topic-meta {
-    h1 { font-size: 1.5rem; }
-    .topic-icon { font-size: 2.25rem; }
+    h1 {
+      font-size: 1.5rem;
+    }
+    .topic-icon {
+      font-size: 2.25rem;
+    }
   }
 }

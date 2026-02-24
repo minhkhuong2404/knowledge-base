@@ -3,7 +3,8 @@
     <div class="hero-content mx-auto text-center">
       <h1>Java Knowledge Base</h1>
       <p class="hero-subtitle">
-        Your comprehensive resource for mastering Java — from core fundamentals to advanced frameworks.
+        Your comprehensive resource for mastering Java — from core fundamentals to advanced
+        frameworks.
       </p>
       <a routerLink="/category/core-java" mat-flat-button class="hero-cta">
         Start Learning
@@ -42,12 +43,18 @@
   <section class="categories-section">
     <div class="container-xl">
       <h2 class="section-title">Learn Java</h2>
-      <p class="section-desc">Explore topics organized by category. Click a category to browse all topics.</p>
+      <p class="section-desc">
+        Explore topics organized by category. Click a category to browse all topics.
+      </p>
       <div class="row g-3">
         @for (category of categories; track category.id) {
           <div class="col-12 col-md-6">
             <a [routerLink]="['/category', category.id]" class="category-card-link d-block">
-              <mat-card appearance="outlined" class="category-card" [style.--accent-color]="category.color">
+              <mat-card
+                appearance="outlined"
+                class="category-card"
+                [style.--accent-color]="category.color"
+              >
                 <mat-card-content class="d-flex align-items-start gap-3">
                   <div class="category-icon flex-shrink-0">{{ category.icon }}</div>
                   <div class="category-info">
@@ -119,9 +126,7 @@
             <a routerLink="/category/collections">
               <i class="fa-solid fa-chevron-right"></i> Collections Framework
             </a>
-            <a routerLink="/category/io">
-              <i class="fa-solid fa-chevron-right"></i> Java I/O
-            </a>
+            <a routerLink="/category/io"> <i class="fa-solid fa-chevron-right"></i> Java I/O </a>
           </div>
         </div>
         <div class="col-12 col-sm-6 col-md-4">

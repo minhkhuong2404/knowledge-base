@@ -32,7 +32,12 @@ hljs.registerLanguage('properties', properties);
           <span class="code-title">{{ title() }}</span>
           <div class="code-actions">
             <span class="code-lang">{{ language() }}</span>
-            <button mat-stroked-button class="copy-btn" (click)="copyCode()" [class.copied]="copied()">
+            <button
+              mat-stroked-button
+              class="copy-btn"
+              (click)="copyCode()"
+              [class.copied]="copied()"
+            >
               <i [class]="copied() ? 'fa-solid fa-check' : 'fa-regular fa-copy'"></i>
               {{ copied() ? 'Copied' : 'Copy' }}
             </button>
@@ -74,7 +79,7 @@ hljs.registerLanguage('properties', properties);
     .code-lang {
       font-size: 0.72rem;
       font-weight: 600;
-      color: #E76F00;
+      color: #e76f00;
       background: rgba(231, 111, 0, 0.08);
       padding: 0.2rem 0.5rem;
       border-radius: 6px;
@@ -130,48 +135,86 @@ hljs.registerLanguage('properties', properties);
       .hljs-keyword,
       .hljs-selector-tag,
       .hljs-built_in,
-      .hljs-type { color: #cba6f7; }
+      .hljs-type {
+        color: #cba6f7;
+      }
 
       .hljs-string,
-      .hljs-template-variable { color: #a6e3a1; }
+      .hljs-template-variable {
+        color: #a6e3a1;
+      }
 
       .hljs-comment,
-      .hljs-doctag { color: #6c7086; font-style: italic; }
+      .hljs-doctag {
+        color: #6c7086;
+        font-style: italic;
+      }
 
       .hljs-number,
-      .hljs-literal { color: #fab387; }
+      .hljs-literal {
+        color: #fab387;
+      }
 
       .hljs-title,
       .hljs-section,
-      .hljs-title.function_ { color: #89b4fa; }
+      .hljs-title.function_ {
+        color: #89b4fa;
+      }
 
       .hljs-class .hljs-title,
-      .hljs-title.class_ { color: #f9e2af; }
+      .hljs-title.class_ {
+        color: #f9e2af;
+      }
 
       .hljs-attr,
-      .hljs-attribute { color: #f9e2af; }
+      .hljs-attribute {
+        color: #f9e2af;
+      }
 
       .hljs-variable,
-      .hljs-template-variable { color: #f38ba8; }
+      .hljs-template-variable {
+        color: #f38ba8;
+      }
 
       .hljs-symbol,
-      .hljs-bullet { color: #f2cdcd; }
+      .hljs-bullet {
+        color: #f2cdcd;
+      }
 
-      .hljs-meta { color: #f5c2e7; }
+      .hljs-meta {
+        color: #f5c2e7;
+      }
 
-      .hljs-meta .hljs-keyword { color: #fab387; }
+      .hljs-meta .hljs-keyword {
+        color: #fab387;
+      }
 
-      .hljs-link { color: #89b4fa; text-decoration: underline; }
+      .hljs-link {
+        color: #89b4fa;
+        text-decoration: underline;
+      }
 
-      .hljs-deletion { color: #f38ba8; }
-      .hljs-addition { color: #a6e3a1; }
+      .hljs-deletion {
+        color: #f38ba8;
+      }
+      .hljs-addition {
+        color: #a6e3a1;
+      }
 
-      .hljs-params { color: #cdd6f4; }
+      .hljs-params {
+        color: #cdd6f4;
+      }
 
-      .hljs-property { color: #89dceb; }
+      .hljs-property {
+        color: #89dceb;
+      }
 
-      .hljs-tag { color: #cba6f7; }
-      .hljs-name { color: #cba6f7; }
+      .hljs-tag {
+        color: #cba6f7;
+      }
+      .hljs-name {
+        color: #cba6f7;
+      }
     }
   `,
 })
@@ -202,9 +245,6 @@ export class CodeBlock {
   }
 
   private escapeHtml(text: string): string {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 }

@@ -47,7 +47,7 @@ export class KnowledgeService {
       this.categoryById.set(cat.id, cat);
     }
 
-    this.categoriesWithCounts = CATEGORIES.map(cat => ({
+    this.categoriesWithCounts = CATEGORIES.map((cat) => ({
       ...cat,
       topicCount: this.topicsByCategory.get(cat.id)?.length ?? 0,
     }));
@@ -80,14 +80,15 @@ export class KnowledgeService {
   searchTopics(query: string): Topic[] {
     const q = query.toLowerCase().trim();
     if (!q) return [];
-    return this.topics.filter(topic =>
-      topic.title.toLowerCase().includes(q) ||
-      topic.description.toLowerCase().includes(q) ||
-      topic.tags.some(tag => tag.toLowerCase().includes(q)) ||
-      topic.content.some(section =>
-        section.heading.toLowerCase().includes(q) ||
-        section.body.toLowerCase().includes(q)
-      )
+    return this.topics.filter(
+      (topic) =>
+        topic.title.toLowerCase().includes(q) ||
+        topic.description.toLowerCase().includes(q) ||
+        topic.tags.some((tag) => tag.toLowerCase().includes(q)) ||
+        topic.content.some(
+          (section) =>
+            section.heading.toLowerCase().includes(q) || section.body.toLowerCase().includes(q),
+        ),
     );
   }
 }

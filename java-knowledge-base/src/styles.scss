@@ -12,20 +12,22 @@
 @import 'bootstrap/scss/utilities';
 @import 'bootstrap/scss/utilities/api';
 
-$java-theme: mat.define-theme((
-  color: (
-    theme-type: light,
-    primary: mat.$azure-palette,
-    tertiary: mat.$orange-palette,
-  ),
-  typography: (
-    brand-family: '"Inter", sans-serif',
-    plain-family: '"Inter", sans-serif',
-  ),
-  density: (
-    scale: 0,
-  ),
-));
+$java-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$orange-palette,
+    ),
+    typography: (
+      brand-family: '"Inter", sans-serif',
+      plain-family: '"Inter", sans-serif',
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
 
 html {
   @include mat.theme($java-theme);
@@ -45,8 +47,15 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Helvetica, Arial, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
   color: #111827;
   background: #fff;
   line-height: 1.5;
@@ -62,7 +71,12 @@ img {
   height: auto;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   line-height: 1.3;
 }
 
@@ -106,7 +120,9 @@ h1, h2, h3, h4, h5, h6 {
     color: $text !important;
   }
 
-  i { color: $text !important; }
+  i {
+    color: $text !important;
+  }
 }
 
 .mat-mdc-chip {
@@ -116,7 +132,11 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     height: 26px;
 
-    i { color: #059669 !important; font-size: 11px; margin-right: 4px; }
+    i {
+      color: #059669 !important;
+      font-size: 11px;
+      margin-right: 4px;
+    }
   }
 
   &.intermediate {
@@ -125,7 +145,11 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     height: 26px;
 
-    i { color: #d97706 !important; font-size: 11px; margin-right: 4px; }
+    i {
+      color: #d97706 !important;
+      font-size: 11px;
+      margin-right: 4px;
+    }
   }
 
   &.advanced {
@@ -134,7 +158,11 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     height: 26px;
 
-    i { color: #dc2626 !important; font-size: 11px; margin-right: 4px; }
+    i {
+      color: #dc2626 !important;
+      font-size: 11px;
+      margin-right: 4px;
+    }
   }
 
   &.tag-chip {
@@ -143,11 +171,25 @@ h1, h2, h3, h4, h5, h6 {
     height: 24px;
   }
 
-  &.tag-chip:nth-child(7n+1) { @include chip-colors(#eff6ff, #2563eb, #e0eeff); }
-  &.tag-chip:nth-child(7n+2) { @include chip-colors(#f5f3ff, #7c3aed, #ece8ff); }
-  &.tag-chip:nth-child(7n+3) { @include chip-colors(#ecfdf5, #0d9488, #ddfbf2); }
-  &.tag-chip:nth-child(7n+4) { @include chip-colors(#fdf2f8, #db2777, #fce7f3); }
-  &.tag-chip:nth-child(7n+5) { @include chip-colors(#eef2ff, #4f46e5, #e4e8fc); }
-  &.tag-chip:nth-child(7n+6) { @include chip-colors(#fff7ed, #ea580c, #ffedd5); }
-  &.tag-chip:nth-child(7n)   { @include chip-colors(#ecfeff, #0891b2, #ddfafe); }
+  &.tag-chip:nth-child(7n + 1) {
+    @include chip-colors(#eff6ff, #2563eb, #e0eeff);
+  }
+  &.tag-chip:nth-child(7n + 2) {
+    @include chip-colors(#f5f3ff, #7c3aed, #ece8ff);
+  }
+  &.tag-chip:nth-child(7n + 3) {
+    @include chip-colors(#ecfdf5, #0d9488, #ddfbf2);
+  }
+  &.tag-chip:nth-child(7n + 4) {
+    @include chip-colors(#fdf2f8, #db2777, #fce7f3);
+  }
+  &.tag-chip:nth-child(7n + 5) {
+    @include chip-colors(#eef2ff, #4f46e5, #e4e8fc);
+  }
+  &.tag-chip:nth-child(7n + 6) {
+    @include chip-colors(#fff7ed, #ea580c, #ffedd5);
+  }
+  &.tag-chip:nth-child(7n) {
+    @include chip-colors(#ecfeff, #0891b2, #ddfafe);
+  }
 }

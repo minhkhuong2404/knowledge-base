@@ -83,7 +83,10 @@
                     Related Topics
                   </h3>
                   @for (related of relatedTopics(); track related.id) {
-                    <a [routerLink]="['/topic', related.id]" class="related-link d-flex align-items-center gap-2">
+                    <a
+                      [routerLink]="['/topic', related.id]"
+                      class="related-link d-flex align-items-center gap-2"
+                    >
                       <span class="related-icon">{{ related.icon }}</span>
                       <span>{{ related.title }}</span>
                       <i class="fa-solid fa-chevron-right link-arrow ms-auto"></i>

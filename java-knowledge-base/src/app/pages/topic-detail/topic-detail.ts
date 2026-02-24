@@ -56,10 +56,14 @@ export class TopicDetail {
 
   getDifficultyIcon(difficulty: string): string {
     switch (difficulty) {
-      case 'Beginner': return 'fa-solid fa-seedling';
-      case 'Intermediate': return 'fa-solid fa-fire';
-      case 'Advanced': return 'fa-solid fa-rocket';
-      default: return 'fa-solid fa-circle';
+      case 'Beginner':
+        return 'fa-solid fa-seedling';
+      case 'Intermediate':
+        return 'fa-solid fa-fire';
+      case 'Advanced':
+        return 'fa-solid fa-rocket';
+      default:
+        return 'fa-solid fa-circle';
     }
   }
 }

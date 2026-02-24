@@ -2,7 +2,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'formatBody' })
 export class FormatBodyPipe implements PipeTransform {
-
   transform(value: string): string {
     if (!value) return '';
 
@@ -18,10 +17,7 @@ export class FormatBodyPipe implements PipeTransform {
   }
 
   private escapeHtml(text: string): string {
-    return text
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;');
+    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   }
 
   private convertBacktickCode(text: string): string {
@@ -43,9 +39,7 @@ export class FormatBodyPipe implements PipeTransform {
     for (let g = 0; g < groups.length; g++) {
       const group = groups[g];
       const groupStart = group[0].index!;
-      const nextBoundary = g + 1 < groups.length
-        ? groups[g + 1][0].index!
-        : text.length;
+      const nextBoundary = g + 1 < groups.length ? groups[g + 1][0].index! : text.length;
 
       let intro = text.substring(cursor, groupStart).trimEnd();
       intro = intro.replace(/[:—–\-]\s*$/, '').trimEnd();
@@ -54,9 +48,7 @@ export class FormatBodyPipe implements PipeTransform {
       const items: string[] = [];
       for (let i = 0; i < group.length; i++) {
         const itemStart = group[i].index! + group[i][0].length;
-        const itemEnd = i + 1 < group.length
-          ? group[i + 1].index!
-          : nextBoundary;
+        const itemEnd = i + 1 < group.length ? group[i + 1].index! : nextBoundary;
         let item = text.substring(itemStart, itemEnd).trim();
         item = item.replace(/\.\s*$/, '');
         items.push(item);
@@ -81,9 +73,7 @@ export class FormatBodyPipe implements PipeTransform {
     return result;
   }
 
-  private findConsecutiveGroups(
-    matches: RegExpMatchArray[]
-  ): RegExpMatchArray[][] {
+  private findConsecutiveGroups(matches: RegExpMatchArray[]): RegExpMatchArray[][] {
     const groups: RegExpMatchArray[][] = [];
     let current: RegExpMatchArray[] = [matches[0]];
 
@@ -112,9 +102,7 @@ export class FormatBodyPipe implements PipeTransform {
     if (items.length === 0) return '';
 
     const lastItem = items[items.length - 1];
-    const sentenceBreak = lastItem.match(
-      /\.\s+([A-Z][^.]*(?:\([^)]*\)[^.]*)*\.?\s*.*$)/
-    );
+    const sentenceBreak = lastItem.match(/\.\s+([A-Z][^.]*(?:\([^)]*\)[^.]*)*\.?\s*.*$)/);
 
     if (sentenceBreak && sentenceBreak.index !== undefined) {
       const breakPoint = sentenceBreak.index + 1;
@@ -165,20 +153,92 @@ export class FormatBodyPipe implements PipeTransform {
 
   private highlightEmphasis(text: string): string {
     const emphasisWords = [
-      'NOT', 'MUST', 'ALWAYS', 'NEVER', 'BEFORE', 'AFTER',
-      'CRITICAL', 'IMPORTANT', 'NOTE', 'WARNING', 'ONLY',
-      'CANNOT', 'FORCED',
+      'NOT',
+      'MUST',
+      'ALWAYS',
+      'NEVER',
+      'BEFORE',
+      'AFTER',
+      'CRITICAL',
+      'IMPORTANT',
+      'NOTE',
+      'WARNING',
+      'ONLY',
+      'CANNOT',
+      'FORCED',
     ];
 
     const techAcronyms = new Set([
-      'JVM', 'JDK', 'JRE', 'GC', 'API', 'SQL', 'IO', 'JIT', 'AQS', 'CAS',
-      'OOP', 'SPI', 'JDBC', 'JMM', 'CLH', 'FIFO', 'LIFO', 'CPU', 'NIO',
-      'OOM', 'NPE', 'DI', 'AOP', 'PECS', 'SOLID', 'SRP', 'OCP', 'LSP',
-      'ISP', 'DIP', 'JNI', 'OS', 'UTC', 'IEEE', 'JPMS', 'HTTP', 'JSON',
-      'XML', 'URI', 'URL', 'ASCII', 'UTF', 'CGLIB', 'ASM', 'STW', 'JFR',
-      'JMC', 'MAT', 'CVE', 'RPC', 'HTML', 'CSS', 'GUI', 'CLI', 'AOT',
-      'REPL', 'LTS', 'TCCL', 'OK', 'OR', 'AND', 'HB', 'CDS', 'GET',
-      'PUT', 'POST', 'DELETE', 'ID', 'TTL', 'DO',
+      'JVM',
+      'JDK',
+      'JRE',
+      'GC',
+      'API',
+      'SQL',
+      'IO',
+      'JIT',
+      'AQS',
+      'CAS',
+      'OOP',
+      'SPI',
+      'JDBC',
+      'JMM',
+      'CLH',
+      'FIFO',
+      'LIFO',
+      'CPU',
+      'NIO',
+      'OOM',
+      'NPE',
+      'DI',
+      'AOP',
+      'PECS',
+      'SOLID',
+      'SRP',
+      'OCP',
+      'LSP',
+      'ISP',
+      'DIP',
+      'JNI',
+      'OS',
+      'UTC',
+      'IEEE',
+      'JPMS',
+      'HTTP',
+      'JSON',
+      'XML',
+      'URI',
+      'URL',
+      'ASCII',
+      'UTF',
+      'CGLIB',
+      'ASM',
+      'STW',
+      'JFR',
+      'JMC',
+      'MAT',
+      'CVE',
+      'RPC',
+      'HTML',
+      'CSS',
+      'GUI',
+      'CLI',
+      'AOT',
+      'REPL',
+      'LTS',
+      'TCCL',
+      'OK',
+      'OR',
+      'AND',
+      'HB',
+      'CDS',
+      'GET',
+      'PUT',
+      'POST',
+      'DELETE',
+      'ID',
+      'TTL',
+      'DO',
     ]);
 
     const pattern = new RegExp(`\\b(${emphasisWords.join('|')})\\b`, 'g');
