@@ -257,4 +257,93 @@ chain.handle(incomingRequest); // flows: auth → rate limit → logic`
       }
     ]
   },
+  {
+    id: 'solid-principles',
+    title: 'SOLID Principles',
+    description: 'The five SOLID principles of object-oriented design — SRP, OCP, LSP, ISP, DIP with practical Java examples.',
+    categoryId: 'design-patterns',
+    icon: '🏛️',
+    difficulty: 'Intermediate',
+    tags: ['SOLID', 'SRP', 'OCP', 'LSP', 'ISP', 'DIP', 'Design Principles'],
+    content: [
+      {
+        heading: 'Single Responsibility Principle (SRP)',
+        body: 'A class should have only one reason to change — meaning it should handle just one part of the functionality. Example: a VehicleRegistration class should only handle registration details. If it also manages insurance, it violates SRP. Benefits: easier to understand, test, maintain, and less fragile to changes. In practice: split large service classes into focused ones (UserService, EmailService, AuditService instead of one monolithic UserManager).'
+      },
+      {
+        heading: 'Open/Closed Principle (OCP)',
+        body: 'Classes should be open for extension but closed for modification. You should be able to add new behavior without changing existing code. Achieved through: inheritance, composition, strategy pattern, and dependency injection. Example: a VehicleService class provides maintenance services. When adding electric vehicle support, extend it with ElectricVehicleService rather than modifying the original. In Spring: new endpoints, services, and configurations are added without modifying existing ones.'
+      },
+      {
+        heading: 'Liskov Substitution Principle (LSP)',
+        body: 'Objects of a superclass should be replaceable with objects of its subclasses without affecting program correctness. If Vehicle has a startEngine() method, and subclasses Car and ElectricCar exist, we should be able to use any Vehicle subclass interchangeably. If ElectricCar cannot implement startEngine() because it doesn\'t have a traditional engine, the hierarchy violates LSP. Fix: redesign the interface (e.g., separate start() from engine-specific behavior). Violations often manifest as instanceof checks or unexpected exceptions in polymorphic code.'
+      },
+      {
+        heading: 'Interface Segregation Principle (ISP)',
+        body: 'Do not force any client to depend on methods it does not use — split large interfaces into smaller, focused ones. Bad: one large VehicleOperations interface with drive(), refuel(), charge(), and navigate(). An ElectricCar would be forced to implement refuel() (which makes no sense). Good: split into Drivable, Refuelable, Chargeable, Navigable. Each class implements only the interfaces relevant to it. In Spring: prefer many small @Service interfaces over one God-service interface.'
+      },
+      {
+        heading: 'Dependency Inversion Principle (DIP)',
+        body: 'High-level modules should not depend directly on low-level modules — both should depend on abstractions (interfaces). Example: a VehicleTracker class should not depend on a specific GPS device model. Instead, it interacts through a GPSDevice interface, allowing any implementation to be used without changing VehicleTracker. This is the foundation of Dependency Injection (DI) in Spring — components depend on interfaces, and the container injects the concrete implementations at runtime.'
+      },
+      {
+        heading: 'SOLID in Practice',
+        body: 'These principles are not absolute rules but guidelines that lead to maintainable, testable, and flexible code. Trade-offs: overly strict adherence can lead to excessive abstraction and complexity (over-engineering). Apply SOLID pragmatically: start simple, refactor toward SOLID when pain points emerge (hard to test, hard to extend, brittle changes). In interviews, demonstrate understanding by explaining both the principle AND when NOT to apply it. Spring Framework embodies all five: SRP (focused beans), OCP (extensible through configuration), LSP (interface-based programming), ISP (many small interfaces), DIP (IoC container manages dependencies).'
+      }
+    ],
+    codeExamples: [
+      {
+        title: 'SOLID Principles in Practice',
+        language: 'java',
+        code: `// SRP — each class has one responsibility
+class OrderValidator { boolean validate(Order o) { /* validation only */ return true; } }
+class OrderPersistence { void save(Order o) { /* database only */ } }
+class OrderNotifier { void notify(Order o) { /* email only */ } }
+
+// OCP — extend without modifying
+interface DiscountStrategy {
+    BigDecimal apply(BigDecimal price);
+}
+class NoDiscount implements DiscountStrategy {
+    public BigDecimal apply(BigDecimal price) { return price; }
+}
+class SeasonalDiscount implements DiscountStrategy {
+    public BigDecimal apply(BigDecimal price) {
+        return price.multiply(new BigDecimal("0.8"));
+    }
+}
+// Add new discounts without changing existing code
+
+// LSP — subtypes are substitutable
+interface Vehicle { void start(); double getRange(); }
+record ElectricCar(double batteryKwh) implements Vehicle {
+    public void start() { /* electric motor */ }
+    public double getRange() { return batteryKwh * 4; }
+}
+record GasCar(double fuelLiters) implements Vehicle {
+    public void start() { /* combustion engine */ }
+    public double getRange() { return fuelLiters * 15; }
+}
+// Any Vehicle works — no instanceof checks needed
+void planTrip(Vehicle v) { System.out.println("Range: " + v.getRange()); }
+
+// ISP — small, focused interfaces
+interface Printable { void print(); }
+interface Scannable { void scan(); }
+interface Faxable { void fax(); }
+// Modern printer: implements Printable, Scannable
+// Basic printer: implements Printable only
+
+// DIP — depend on abstractions
+interface NotificationSender { void send(String to, String msg); }
+class EmailSender implements NotificationSender { /* ... */ }
+class SmsSender implements NotificationSender { /* ... */ }
+// High-level module depends on interface, not concrete class
+class OrderService {
+    private final NotificationSender sender; // injected
+    OrderService(NotificationSender sender) { this.sender = sender; }
+}`
+      }
+    ]
+  },
 ];

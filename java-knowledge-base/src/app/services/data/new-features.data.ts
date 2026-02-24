@@ -31,6 +31,42 @@ export const NEW_FEATURES_TOPICS: Topic[] = [
         body: 'Interfaces can have default methods (with implementation) and static methods. Enables interface evolution without breaking implementors. java.util.function: Function<T,R>, Predicate<T>, Consumer<T>, Supplier<T>, BiFunction, UnaryOperator, BinaryOperator. @FunctionalInterface annotation for compile-time validation.'
       },
       {
+        heading: 'filter() vs map() in Streams',
+        body: 'filter() eliminates elements from the collection where the condition is not satisfied — it returns a stream with fewer (or equal) elements but of the same type. map() transforms each element by applying a function — it returns a stream with the same number of elements but potentially a different type. Example: filter(e -> e.getSalary() > 50000) removes low earners. map(Employee::getName) transforms Employee objects into String names. They compose naturally: stream().filter(predicate).map(transform).collect(toList()).'
+      },
+      {
+        heading: 'Intermediate vs Terminal Operations',
+        body: 'Intermediate operations (filter, map, sorted, distinct, limit, skip, flatMap, peek) return another Stream and are lazy — they are NOT executed until a terminal operation is called. Terminal operations (forEach, collect, reduce, count, findFirst, anyMatch, allMatch, min, max, toArray) trigger the actual processing of the entire pipeline and produce a result or side-effect. This lazy evaluation means intermediate operations can be optimized — for example, limit(5) after a filter may avoid processing the entire collection.'
+      },
+      {
+        heading: 'Streams vs Traditional For Loops',
+        body: 'Traditional for loops are generally faster due to less overhead (no lambda wrapping, no object creation for stream pipeline). However, Streams provide: better readability for complex data transformations, built-in parallelism (parallelStream()), declarative style over imperative. Use traditional loops for simple iterations over small datasets where maximum performance matters. Use Streams for complex data transformations, when readability and maintainability are priorities, or when working with large datasets where parallel processing provides benefit.'
+      },
+      {
+        heading: 'Lambda vs Anonymous Classes',
+        body: 'Lambda expressions and anonymous inner classes both provide inline implementations, but differ significantly. Lambdas are more concise (single expression), target only functional interfaces (one abstract method), do not create a new scope for `this` (it refers to the enclosing class), and cannot shadow variables from the enclosing scope. Anonymous classes are more verbose, can implement interfaces with multiple methods or extend concrete classes, have their own `this` reference, and can shadow enclosing variables. Lambdas generally produce cleaner, more readable code. Key difference: `this` inside a lambda refers to the enclosing instance, while `this` inside an anonymous class refers to the anonymous class itself. Similarly, `super` in a lambda refers to the enclosing class\'s superclass.'
+      },
+      {
+        heading: 'Variable Capture & Effectively Final',
+        body: 'Lambda expressions can access variables from their enclosing scope, but only if those variables are final or effectively final (not modified after initialization). This restriction ensures state consistency and thread safety — lambdas may execute on different threads or at a later time. Attempting to modify a local variable inside a lambda causes a compile error. This concept is called "variable capture." Workarounds for mutable state: use AtomicInteger/AtomicReference, wrap in a single-element array, or use a mutable container object. Note: you CAN read and modify instance or static fields from within a lambda (they are not captured in the same way), but this can introduce thread-safety issues.'
+      },
+      {
+        heading: 'findFirst() vs findAny()',
+        body: 'Both are terminal operations returning an Optional. findFirst() returns the first element according to encounter order — deterministic and useful in sequential streams. findAny() can return any element and is optimized for parallel streams where encounter order does not matter, potentially returning results faster by avoiding synchronization. In sequential streams, findAny() typically behaves like findFirst(). Rule: use findFirst() when order matters, findAny() when you just need any matching element and performance in parallel streams is a priority.'
+      },
+      {
+        heading: 'Infinite Streams',
+        body: 'Java 8 supports infinite streams via Stream.iterate(seed, function) and Stream.generate(supplier). Stream.iterate(0, n -> n + 1) generates 0, 1, 2, 3... infinitely by repeatedly applying the function to the previous result. Stream.generate(Math::random) produces a stream of random numbers where each element is independent. Both require a limiting operation (limit(), takeWhile() in Java 9+) to prevent infinite processing. Use iterate() for sequences with dependency on the previous value; use generate() for independent values.'
+      },
+      {
+        heading: 'count(), sum(), and reduce()',
+        body: 'count() returns the number of elements in a stream as a long. sum() is available on specialized streams (IntStream, LongStream, DoubleStream) and returns the total of all elements. reduce() is the most general operation — it combines all stream elements using a binary operator into a single result. reduce() can implement both count and sum: `stream.reduce(0, Integer::sum)`. reduce() with an identity value is safe for empty streams; without identity, it returns Optional. Use count() for tallying, sum() for totals on numeric streams, and reduce() for custom accumulations (max, min, string concatenation, etc.).'
+      },
+      {
+        heading: 'limit() vs skip()',
+        body: 'limit(n) truncates the stream to at most n elements — useful for pagination or taking the top-N results. skip(n) discards the first n elements. Together they enable pagination: `stream.skip(page * size).limit(size)`. Both are short-circuiting intermediate operations for limit, and stateful for skip. On ordered parallel streams, skip() can be expensive because it must maintain encounter order.'
+      },
+      {
         heading: 'Most Common Stream Pitfalls',
         body: '1) Reusing a stream — streams can only be consumed once; calling a terminal operation closes the stream. Creating a second pipeline on the same stream throws IllegalStateException. 2) Side effects in lambdas — operations like forEach with shared mutable state (e.g., adding to an external list) break parallelism and can cause race conditions; use collect() instead. 3) Infinite streams without limit — Stream.generate() or Stream.iterate() without limit() or takeWhile() will run forever. 4) Parallel stream misuse — parallelStream() adds overhead from ForkJoinPool task splitting; for small datasets (<10K elements) or I/O-bound work, sequential is faster. Also, parallel streams share the common ForkJoinPool, so a slow task blocks other parallel streams. 5) Optional.get() without check — throws NoSuchElementException if empty; always use orElse(), orElseGet(), or orElseThrow(). 6) Modifying the source during iteration — adding/removing elements from the source collection while a stream is processing it causes ConcurrentModificationException.'
       }
@@ -126,7 +162,7 @@ Map<String, Double> avgSalary = employees.stream()
       },
       {
         heading: 'Java 10-11: var and HTTP Client',
-        body: 'Java 10: `var` for local variable type inference — compiler infers the type. Use for complex generic types: `var map = new HashMap<String, List<Integer>>()`. Don\'t use when the type isn\'t obvious from context. Java 11 (LTS): new HTTP Client API (java.net.http) — supports HTTP/2, async, WebSocket. String methods: isBlank(), strip(), lines(), repeat(). Files.readString/writeString.'
+        body: 'Java 10: `var` for local variable type inference — compiler infers the type. Use for complex generic types: `var map = new HashMap<String, List<Integer>>()`. Don\'t use when the type isn\'t obvious from context. Java 11 (LTS): new HTTP Client API (java.net.http) — supports HTTP/2, async, WebSocket. Epsilon Garbage Collector (experimental, no-op GC for benchmarks). Z Garbage Collector (experimental, ultra-low latency). Local-variable syntax for lambda parameters: (var x, var y) -> x + y. String methods: isBlank(), strip(), stripLeading(), stripTrailing(), repeat(), lines(). Files.readString/writeString. The strip() methods are Unicode-aware (unlike trim() which only handles ASCII whitespace).'
       },
       {
         heading: 'Java 14-16: Records and Pattern Matching',

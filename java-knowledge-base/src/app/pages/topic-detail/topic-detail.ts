@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { KnowledgeService } from '../../services/knowledge';
 import { Topic, Category } from '../../models/knowledge.model';
+import { CodeBlock } from '../../components/code-block/code-block';
 
 @Component({
   selector: 'app-topic-detail',
-  imports: [RouterLink],
+  imports: [RouterLink, CodeBlock],
   templateUrl: './topic-detail.html',
   styleUrl: './topic-detail.scss'
 })

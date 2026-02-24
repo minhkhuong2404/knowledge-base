@@ -136,52 +136,6 @@
   }
 }
 
-.code-block {
-  margin-bottom: 1.5rem;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid #e5e7eb;
-
-  .code-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.6rem 1rem;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e5e7eb;
-
-    .code-title {
-      font-size: 0.82rem;
-      font-weight: 600;
-      color: #374151;
-    }
-
-    .code-lang {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: #E76F00;
-      background: rgba(231, 111, 0, 0.08);
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
-      text-transform: uppercase;
-    }
-  }
-
-  pre {
-    margin: 0;
-    padding: 1.25rem;
-    background: #1e1e2e;
-    overflow-x: auto;
-
-    code {
-      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
-      font-size: 0.82rem;
-      line-height: 1.65;
-      color: #cdd6f4;
-      white-space: pre;
-    }
-  }
-}
 
 // ─── Sidebar ───
 .sidebar {

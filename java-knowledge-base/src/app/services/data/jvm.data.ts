@@ -127,6 +127,14 @@ public int addStream(int[] arr) {
           body: 'OutOfMemoryError: Java heap space — objects fill the heap (increase -Xmx or fix memory leak). OutOfMemoryError: Metaspace — too many classes loaded (increase -XX:MaxMetaspaceSize or fix classloader leak). StackOverflowError — infinite/deep recursion (increase -Xss or fix recursion). OutOfMemoryError: Direct buffer memory — too much direct ByteBuffer allocation. OutOfMemoryError: unable to create native thread — OS thread limit reached.'
         },
         {
+          heading: 'Memory Leaks in Java',
+          body: 'Although Java has automatic garbage collection, memory leaks can still occur when objects are no longer needed but are still referenced, preventing GC from reclaiming them. Common causes: 1) Static collections that grow indefinitely — static fields live for the entire application lifetime. 2) Unclosed resources — connections, streams, or sessions that hold native memory. 3) Listeners/callbacks not deregistered — registered observers that are never removed. 4) ThreadLocal not cleaned in thread pools — values persist across task executions. 5) Classloader leaks in application servers — redeployed webapps retain references. Tools for identification: VisualVM, JProfiler, YourKit for profiling; Eclipse MAT (Memory Analyzer Tool) for analyzing heap dumps; jmap -histo for quick object histograms; JFR for ongoing monitoring.'
+        },
+        {
+          heading: 'Static Keyword and Memory Impact',
+          body: 'Static fields and methods are stored in Metaspace (class metadata area), not on the heap with instance data. Static elements are created when the class is loaded and remain in memory as long as the class stays loaded — typically for the entire application lifecycle. This means static collections can accumulate data indefinitely if not managed. Static elements are shared among all instances of the class. Memory optimization: avoid storing large amounts of data in static fields unless truly needed as application-wide state; use weak references (WeakHashMap) for caches that should not prevent garbage collection.'
+        },
+        {
           heading: 'Real-World Analogy',
           body: 'The Heap is like a shared warehouse where all objects are stored — any worker (thread) can access items in the warehouse, but you need to coordinate access. When the warehouse is full and cannot be cleaned up, you get OutOfMemoryError (heap space). The Stack is like each worker\'s personal desk — it holds the notes (local variables) and task list (method call chain) for their current job. When a worker stacks too many tasks (deep recursion), the desk overflows: StackOverflowError. Metaspace is a filing cabinet of blueprints (class definitions) — every time the JVM loads a class, it files a blueprint. If you keep loading new classes without removing old ones (classloader leak), the filing cabinet runs out of space: OutOfMemoryError (Metaspace). The Program Counter is a bookmark each worker uses to remember where they are in the instruction manual.'
         }
@@ -214,8 +222,8 @@ public class MetaspaceOOM {
       tags: ['GC', 'G1', 'ZGC', 'Generational', 'Tuning'],
       content: [
         {
-          heading: 'Reachability Analysis',
-          body: 'Java uses reachability analysis (NOT reference counting) to determine which objects are garbage. Starting from GC Roots (local variables, static fields, JNI references, active threads), the GC traces all reachable objects. Unreachable objects are eligible for collection. This handles circular references (unlike reference counting in Python/Swift). finalize() is deprecated — use Cleaner or try-with-resources instead.'
+          heading: 'Reachability Analysis & Reference Types',
+          body: 'Java uses reachability analysis (NOT reference counting) to determine which objects are garbage. Starting from GC Roots (local variables, static fields, JNI references, active threads), the GC traces all reachable objects. Unreachable objects are eligible for collection. This handles circular references (unlike reference counting in Python/Swift). Java has four reference types: 1) Strong references — normal references, never GC\'d while reachable. 2) Soft references (SoftReference) — GC\'d only when memory is low, ideal for caches. 3) Weak references (WeakReference) — GC\'d at the next collection cycle when no strong references exist, used for metadata/canonicalization maps. 4) Phantom references (PhantomReference) — for cleanup actions after GC, replaces finalize(). The finalize() method (deprecated since Java 9) was called by the GC before reclaiming an object — but timing was unpredictable and it could delay collection. Use Cleaner or try-with-resources instead.'
         },
         {
           heading: 'Generational Hypothesis',
@@ -333,6 +341,18 @@ for (GarbageCollectorMXBean gc : ManagementFactory.getGarbageCollectorMXBeans())
         {
           heading: 'Class Loading Triggers',
           body: 'Active use (triggers initialization): new, static field access/modification, static method call, reflection (Class.forName), subclass initialization, main class. Passive use (does NOT trigger initialization): accessing a compile-time constant (static final primitive/String), creating an array of the type, referencing the class via a child. This distinction is critical for understanding static block execution order in interviews.'
+        },
+        {
+          heading: 'NoClassDefFoundError vs ClassNotFoundException',
+          body: 'ClassNotFoundException is a checked exception thrown when the JVM cannot find a class at runtime that was requested dynamically — typically via Class.forName(), ClassLoader.loadClass(), or ClassLoader.findSystemClass(). The class may never have been on the classpath. NoClassDefFoundError is an Error thrown when the JVM finds the class at compile time but cannot find or load it at runtime. Common causes: the class was present during compilation but missing from the runtime classpath, or a static initializer failed (ExceptionInInitializerError first, then NoClassDefFoundError on subsequent attempts). Key difference: ClassNotFoundException = class never found; NoClassDefFoundError = class was known but became unavailable or failed to initialize.'
+        },
+        {
+          heading: 'Class Unloading',
+          body: 'Java does not provide explicit control over class unloading. However, a class can be unloaded when its classloader is garbage collected. For a class to be eligible for unloading: 1) All instances of the class must be GC-eligible (no strong references). 2) The Class object itself must have no strong references. 3) The classloader that loaded the class must be GC-eligible. In practice, classes loaded by the Bootstrap, Platform, or Application classloaders are never unloaded. Custom classloaders (used by app servers, OSGi, hot-reload frameworks) enable class unloading when the entire classloader and its loaded classes become unreachable. This is why application servers can redeploy webapps — each webapp has its own classloader that can be discarded.'
+        },
+        {
+          heading: 'Class Loading and Memory Usage',
+          body: 'Every class loaded into the JVM consumes memory for its metadata (stored in Metaspace): the class structure, method bytecode, constant pool, field descriptors, and annotations. Loading many classes or using large libraries increases Metaspace consumption. In application servers with frequent redeployments, classloader leaks (where old classloaders are not GC\'d due to lingering references) can cause Metaspace exhaustion. Monitor with: -XX:MaxMetaspaceSize, jcmd <pid> GC.class_stats, and jmap -clstats <pid>. Proper classloader lifecycle management is critical in long-running applications.'
         },
         {
           heading: 'Why This Matters',

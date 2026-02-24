@@ -20,7 +20,7 @@ export const CONCURRENCY_TOPICS: Topic[] = [
         },
         {
           heading: 'Key Thread Methods',
-          body: 'start(): creates OS thread and calls run(). sleep(ms): pauses current thread (does NOT release locks). yield(): hints scheduler to give up CPU (rarely useful). join(): waits for another thread to finish. interrupt(): sets interrupt flag — blocking methods throw InterruptedException. isInterrupted(): checks flag without clearing. Thread.interrupted(): checks AND clears.'
+          body: 'start(): creates OS thread and calls run(). sleep(ms): pauses current thread (does NOT release locks). yield(): hints scheduler to give up CPU (rarely useful). join(): waits for another thread to finish. interrupt(): sets interrupt flag — blocking methods throw InterruptedException. isInterrupted(): checks flag without clearing. Thread.interrupted(): checks AND clears. wait(): releases the lock and suspends the thread until notify()/notifyAll() is called — must be in a synchronized block. notify(): wakes one waiting thread. notifyAll(): wakes all waiting threads. Use wait/notify for inter-thread communication (producer-consumer), but prefer java.util.concurrent utilities in modern code.'
         },
         {
           heading: 'Daemon Threads',
@@ -29,6 +29,14 @@ export const CONCURRENCY_TOPICS: Topic[] = [
         {
           heading: 'Thread Safety Basics',
           body: 'A class is thread-safe if it behaves correctly when accessed from multiple threads without external synchronization. Three approaches: 1) Immutability (best — no shared mutable state). 2) Synchronization (locks, synchronized, volatile). 3) Thread confinement (each thread has its own copy — ThreadLocal). The key challenge: visibility (cached values in CPU registers/caches) and atomicity (compound operations are not atomic).'
+        },
+        {
+          heading: 'Synchronized Collections vs Concurrent Collections',
+          body: 'Synchronized collections (Collections.synchronizedList(), synchronizedMap()) wrap a standard collection with a single global lock — every operation acquires this lock, creating a bottleneck where only one thread can access the collection at a time. Iterating requires external synchronization. Concurrent collections (ConcurrentHashMap, CopyOnWriteArrayList, ConcurrentLinkedQueue) are purpose-built for concurrent access with much better performance. ConcurrentHashMap uses fine-grained locking (per-bucket in Java 8+), allowing multiple threads to read concurrently and write to different buckets simultaneously. CopyOnWriteArrayList creates a new copy on every write — reads are lock-free. Hashtable is a legacy synchronized Map — avoid it. Rule: always prefer concurrent collections from java.util.concurrent over synchronized wrappers in production code.'
+        },
+        {
+          heading: 'Single-Thread Deadlock & Common Threading Pitfalls',
+          body: 'A traditional deadlock requires two or more threads, but a single thread can experience a self-deadlock (resource starvation) if it recursively acquires a non-reentrant lock it already holds. Since Java\'s synchronized and ReentrantLock are reentrant (the same thread can acquire the same lock multiple times), this is rare with built-in locks but possible with custom lock implementations. Other common pitfalls: thread leaks (forgetting to shut down ExecutorService), race conditions on check-then-act patterns (check a condition then act on it without atomicity), livelock (threads keep responding to each other but never make progress), and starvation (a thread cannot get resources because others monopolize them).'
         },
         {
           heading: 'Real-World Analogy',
@@ -334,6 +342,14 @@ log.info("Pool: active={}, queued={}, completed={}",
         {
           heading: 'synchronized vs ReentrantLock',
           body: 'synchronized: simpler syntax, automatic release (even on exception), no risk of forgetting unlock. ReentrantLock: tryLock() for non-blocking attempt, lockInterruptibly() for interruptible waiting, fair ordering option, multiple Conditions (vs single wait/notify). Use synchronized for simple cases, ReentrantLock when you need advanced features. Since Java 6, synchronized performance is comparable to ReentrantLock (biased locking, lock coarsening, etc.).'
+        },
+        {
+          heading: 'Synchronized Method vs Synchronized Block',
+          body: 'Synchronized method: locks the entire method. For instance methods, the lock is on `this`; for static methods, the lock is on the Class object. Simple but coarse-grained — other threads cannot enter ANY synchronized method of the same object, even if they target different data. Synchronized block: `synchronized(lockObj) { ... }` — locks only the specific block of code on a specific object. More flexible and fine-grained, reducing the scope of locking to just the critical section. This minimizes the time other threads are blocked, improving performance. Best practice: minimize the scope of synchronized blocks. Lock on private final objects (`private final Object lock = new Object()`) rather than `this` to prevent external code from acquiring your lock.'
+        },
+        {
+          heading: 'Exceptions Inside Synchronized Blocks',
+          body: 'When an exception occurs inside a synchronized block or method, the lock is automatically released. This is a key safety feature of Java\'s synchronized mechanism — it ensures that locks are managed cleanly even during exceptional conditions, preventing deadlocks from unreleased locks. This is one advantage of synchronized over ReentrantLock: with ReentrantLock, you MUST use try-finally to ensure the lock is released on exception, since there is no automatic release mechanism. Forgetting the finally block with ReentrantLock is a common source of lock leaks and deadlocks.'
         },
         {
           heading: 'ReadWriteLock',

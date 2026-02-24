@@ -43,13 +43,11 @@
             <div class="code-examples">
               <h2>Code Examples</h2>
               @for (example of topic.codeExamples; track example.title) {
-                <div class="code-block">
-                  <div class="code-header">
-                    <span class="code-title">{{ example.title }}</span>
-                    <span class="code-lang">{{ example.language }}</span>
-                  </div>
-                  <pre><code>{{ example.code }}</code></pre>
-                </div>
+                <app-code-block
+                  [code]="example.code"
+                  [language]="example.language"
+                  [title]="example.title"
+                />
               }
             </div>
           }
