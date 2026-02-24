@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, input, computed, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import hljs from 'highlight.js/lib/core';
 import java from 'highlight.js/lib/languages/java';
 import xml from 'highlight.js/lib/languages/xml';
@@ -23,6 +24,7 @@ hljs.registerLanguage('properties', properties);
 @Component({
   selector: 'app-code-block',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [MatButtonModule],
   template: `
     <div class="code-block">
       @if (title()) {
@@ -30,8 +32,9 @@ hljs.registerLanguage('properties', properties);
           <span class="code-title">{{ title() }}</span>
           <div class="code-actions">
             <span class="code-lang">{{ language() }}</span>
-            <button class="copy-btn" (click)="copyCode()" [class.copied]="copied()">
-              {{ copied() ? '✓ Copied' : 'Copy' }}
+            <button mat-stroked-button class="copy-btn" (click)="copyCode()" [class.copied]="copied()">
+              <i [class]="copied() ? 'fa-solid fa-check' : 'fa-regular fa-copy'"></i>
+              {{ copied() ? 'Copied' : 'Copy' }}
             </button>
           </div>
         </div>
@@ -42,7 +45,7 @@ hljs.registerLanguage('properties', properties);
   styles: `
     .code-block {
       margin-bottom: 1.5rem;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       border: 1px solid #e5e7eb;
     }
@@ -73,30 +76,24 @@ hljs.registerLanguage('properties', properties);
       font-weight: 600;
       color: #E76F00;
       background: rgba(231, 111, 0, 0.08);
-      padding: 0.15rem 0.5rem;
-      border-radius: 4px;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
       text-transform: uppercase;
     }
 
     .copy-btn {
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: #6b7280;
-      background: transparent;
-      border: 1px solid #e5e7eb;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.15s;
+      --mdc-outlined-button-label-text-size: 0.72rem;
+      height: 28px;
+      padding: 0 0.5rem;
 
-      &:hover {
-        background: #f3f4f6;
-        color: #374151;
+      i {
+        font-size: 12px;
+        margin-right: 0.25rem;
       }
 
       &.copied {
-        color: #059669;
-        border-color: #059669;
+        --mdc-outlined-button-label-text-color: #059669;
+        --mdc-outlined-button-outline-color: #059669;
       }
     }
 

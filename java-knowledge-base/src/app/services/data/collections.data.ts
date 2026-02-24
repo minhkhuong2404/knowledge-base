@@ -8,27 +8,27 @@ export const COLLECTIONS_TOPICS: Topic[] = [
       categoryId: 'collections',
       icon: '🗂️',
       difficulty: 'Beginner',
-      tags: ['Collections', 'List', 'Set', 'Map', 'Queue', 'Hierarchy'],
+      tags: ['Collections', 'List', 'Set', 'Map', 'Queue', 'Hierarchy', 'Comparable', 'Comparator', 'Deque', 'Iterable', 'TreeSet', 'HashSet'],
       content: [
         {
           heading: 'Collection Hierarchy',
-          body: 'Iterable → Collection → List (ordered, duplicates allowed), Set (no duplicates), Queue/Deque (FIFO/LIFO). Map is separate (not a Collection). Key interfaces: List (ArrayList, LinkedList, Vector), Set (HashSet, LinkedHashSet, TreeSet, EnumSet), Queue (LinkedList, PriorityQueue, ArrayDeque), Deque (ArrayDeque, LinkedList), Map (HashMap, LinkedHashMap, TreeMap, Hashtable, ConcurrentHashMap).'
+          body: '`Iterable` → `Collection` → **List** (ordered, duplicates allowed), **Set** (no duplicates), **Queue/Deque** (FIFO/LIFO). `Map` is separate (*not a `Collection`*).\n\nKey interfaces: **List** (`ArrayList`, `LinkedList`, `Vector`), **Set** (`HashSet`, `LinkedHashSet`, `TreeSet`, `EnumSet`), **Queue** (`LinkedList`, `PriorityQueue`, `ArrayDeque`), **Deque** (`ArrayDeque`, `LinkedList`), **Map** (`HashMap`, `LinkedHashMap`, `TreeMap`, `Hashtable`, `ConcurrentHashMap`).'
         },
         {
           heading: 'List vs Set vs Queue vs Map',
-          body: 'List: ordered sequence with index-based access, allows duplicates. Set: unique elements, no ordering guarantee (HashSet) or sorted (TreeSet) or insertion-ordered (LinkedHashSet). Queue: FIFO ordering, PriorityQueue for priority-based. Deque: double-ended queue, use as stack or queue (prefer ArrayDeque over Stack). Map: key-value pairs with unique keys.'
+          body: '**List**: ordered sequence with index-based access, allows duplicates.\n**Set**: unique elements, no ordering guarantee (`HashSet`) or sorted (`TreeSet`) or insertion-ordered (`LinkedHashSet`).\n**Queue**: FIFO ordering, `PriorityQueue` for priority-based.\n**Deque**: double-ended queue, use as stack or queue (*prefer `ArrayDeque` over `Stack`*).\n**Map**: key-value pairs with unique keys.'
         },
         {
           heading: 'Choosing the Right Collection',
-          body: 'Need indexed access? ArrayList. Need fast add/remove at both ends? ArrayDeque. Need uniqueness? HashSet. Need sorted unique elements? TreeSet. Need key-value lookups? HashMap. Need sorted keys? TreeMap. Need insertion-order keys? LinkedHashMap. Need thread safety? ConcurrentHashMap, CopyOnWriteArrayList, or BlockingQueue. Need enum keys? EnumMap/EnumSet (fastest).'
+          body: 'Need indexed access? `ArrayList`. Need fast add/remove at both ends? `ArrayDeque`.\nNeed uniqueness? `HashSet`. Need sorted unique elements? `TreeSet`.\nNeed key-value lookups? `HashMap`. Need sorted keys? `TreeMap`. Need insertion-order keys? `LinkedHashMap`.\nNeed thread safety? `ConcurrentHashMap`, `CopyOnWriteArrayList`, or `BlockingQueue`.\nNeed enum keys? `EnumMap`/`EnumSet` (*fastest*).'
         },
         {
           heading: 'Comparable vs Comparator',
-          body: 'Comparable<T>: natural ordering defined BY the class itself (implement `compareTo(T)`). Comparator<T>: external ordering strategy (separate from the class). Use Comparator for multiple sort criteria: `Comparator.comparing(User::getName).thenComparingInt(User::getAge).reversed()`. TreeSet/TreeMap require elements to be Comparable OR supply a Comparator.'
+          body: '`Comparable<T>`: **natural ordering** defined BY the class itself (implement `compareTo(T)`).\n`Comparator<T>`: **external ordering** strategy (separate from the class).\n\nUse `Comparator` for multiple sort criteria: `Comparator.comparing(User::getName).thenComparingInt(User::getAge).reversed()`. `TreeSet`/`TreeMap` require elements to be `Comparable` OR supply a `Comparator`.'
         },
         {
           heading: 'Real-World Analogy',
-          body: 'Think of collections as different types of containers. List = a numbered shelf where every slot has a position (0, 1, 2…) and you can have duplicate items on different slots. Set = a bag of unique marbles — you can toss marbles in, but if one is already there it\'s ignored; there is no inherent "first" or "second" marble. Queue = a line at a store — people join at the back and leave from the front (FIFO); a PriorityQueue is like a hospital ER where the most critical patient is seen first regardless of arrival time. Map = a dictionary or phone book — you look up a word (key) to find its definition (value); each word appears only once, but different words can share the same definition.'
+          body: '**List** — *a numbered shelf where every slot has a position (0, 1, 2…) and you can have duplicate items on different slots.*\n\n**Set** — *a bag of unique marbles. You can toss marbles in, but if one is already there it\'s ignored; there is no inherent "first" or "second" marble.*\n\n**Queue** — *a line at a store. People join at the back and leave from the front (FIFO). A `PriorityQueue` is like a hospital ER where the most critical patient is seen first regardless of arrival time.*\n\n**Map** — *a dictionary or phone book. You look up a word (key) to find its definition (value); each word appears only once, but different words can share the same definition.*'
         }
       ],
       codeExamples: [
@@ -102,27 +102,27 @@ Comparator<Employee> bySalaryDesc = bySalaryAsc.reversed();`
       categoryId: 'collections',
       icon: '📋',
       difficulty: 'Intermediate',
-      tags: ['ArrayList', 'Source Code', 'Array', 'Resize', 'Performance'],
+      tags: ['ArrayList', 'Source Code', 'Array', 'Resize', 'Performance', 'Dynamic Array', 'Cache Locality', 'System.arraycopy', 'Amortized O(1)'],
       content: [
         {
           heading: 'Internal Structure',
-          body: 'ArrayList is backed by `Object[] elementData` with a `size` field tracking actual elements. Default initial capacity: 10 (created lazily — empty array until first add). Elements are stored contiguously in the array, providing excellent cache locality.'
+          body: '`ArrayList` is backed by `Object[] elementData` with a `size` field tracking actual elements. Default initial capacity: **10** (*created lazily — empty array until first add*).\nElements are stored contiguously in the array, providing **excellent cache locality**.'
         },
         {
           heading: 'Growth Strategy',
-          body: 'When capacity is exhausted, `grow()` is called: new capacity = old capacity + (old capacity >> 1) — approximately 1.5x growth. A new array is allocated and `Arrays.copyOf()` copies elements (System.arraycopy internally). This amortized strategy means add() is O(1) amortized but O(n) worst case during resize. Pre-size with `new ArrayList<>(expectedSize)` if you know the size to avoid resizes.'
+          body: 'When capacity is exhausted, `grow()` is called: new capacity = old capacity + (old capacity >> 1) — approximately **1.5x growth**.\nA new array is allocated and `Arrays.copyOf()` copies elements (`System.arraycopy` internally).\n\nThis amortized strategy means `add()` is **O(1) amortized** but O(n) worst case during resize. Pre-size with `new ArrayList<>(expectedSize)` if you know the size to avoid resizes.'
         },
         {
           heading: 'Key Operations Complexity',
-          body: 'get(index): O(1) — direct array access. add(element): O(1) amortized. add(index, element): O(n) — shifts elements right via System.arraycopy. remove(index): O(n) — shifts elements left. contains/indexOf: O(n) — linear scan. set(index, element): O(1). iterator.remove(): O(n). Fail-fast iterators: `modCount` detects concurrent modification.'
+          body: '`get(index)`: **O(1)** — direct array access. `add(element)`: **O(1)** amortized.\n`add(index, element)`: **O(n)** — shifts elements right via `System.arraycopy`. `remove(index)`: **O(n)** — shifts elements left.\n`contains`/`indexOf`: **O(n)** — linear scan. `set(index, element)`: **O(1)**.\n\n**Fail-fast iterators**: `modCount` detects concurrent modification.'
         },
         {
           heading: 'ArrayList vs LinkedList',
-          body: 'ArrayList wins in almost all practical scenarios due to cache locality and lower memory overhead (no node objects/pointers). LinkedList: O(1) add/remove at head/tail but O(n) random access, higher memory (each node has prev/next pointers + object overhead). Only use LinkedList as a Deque when you need constant-time add/remove at both ends AND never random access. In benchmarks, ArrayList is faster even for mid-list insertions until list size is very large.'
+          body: '`ArrayList` wins in **almost all practical scenarios** due to cache locality and lower memory overhead (*no node objects/pointers*).\n`LinkedList`: O(1) add/remove at head/tail but O(n) random access, higher memory (*each node has prev/next pointers + object overhead*).\n\nOnly use `LinkedList` as a `Deque` when you need constant-time add/remove at both ends AND never random access. *In benchmarks, `ArrayList` is faster even for mid-list insertions until list size is very large.*'
         },
         {
           heading: 'Visual Walkthrough',
-          body: 'Step-by-step: adding 11 elements to a default ArrayList. (1) `new ArrayList<>()` — elementData is an empty array `{}` (lazy initialization, capacity 0). (2) First `add()` — triggers grow(), allocates `Object[10]`. Elements 1-10 are added at indices 0-9, size goes from 1 to 10, no further resizing needed. (3) 11th `add()` — size (10) == capacity (10), triggers `grow()`. New capacity = 10 + (10 >> 1) = 10 + 5 = 15. A new `Object[15]` is allocated, `Arrays.copyOf` copies all 10 elements, then element 11 is placed at index 10. The old `Object[10]` array becomes eligible for GC. After this, you have 4 empty slots (indices 11-14) ready for future adds without resizing. Next resize happens at element 16 (capacity grows 15 → 22).'
+          body: 'Step-by-step: adding 11 elements to a default `ArrayList`.\n\n(1) `new ArrayList<>()` — `elementData` is an empty array `{}` (*lazy initialization, capacity 0*).\n(2) First `add()` — triggers `grow()`, allocates `Object[10]`. Elements 1-10 are added at indices 0-9, size goes from 1 to 10, no further resizing needed.\n(3) 11th `add()` — size (10) == capacity (10), triggers `grow()`. New capacity = 10 + (10 >> 1) = **10 + 5 = 15**. A new `Object[15]` is allocated, `Arrays.copyOf` copies all 10 elements, then element 11 is placed at index 10.\n\nThe old `Object[10]` array becomes eligible for GC. After this, you have 4 empty slots (indices 11-14) ready for future adds without resizing. *Next resize happens at element 16 (capacity grows 15 → 22).*'
         }
       ],
       codeExamples: [
@@ -218,31 +218,31 @@ System.out.printf("Insert at head — ArrayList: %d ms, LinkedList: %d ms%n",
       categoryId: 'collections',
       icon: '🗺️',
       difficulty: 'Advanced',
-      tags: ['HashMap', 'Hashing', 'Treeification', 'Source Code', 'Resize'],
+      tags: ['HashMap', 'Hashing', 'Treeification', 'Source Code', 'Resize', 'Red-Black Tree', 'Bucket', 'Load Factor', 'hashCode', 'equals'],
       content: [
         {
           heading: 'Internal Structure',
-          body: 'HashMap uses `Node<K,V>[] table` (array of buckets). Each bucket is a linked list (or red-black tree when threshold exceeded). Key fields: `table` (bucket array), `size` (entry count), `threshold` (resize trigger = capacity × loadFactor), `loadFactor` (default 0.75). Default initial capacity: 16 (must be power of 2).'
+          body: '`HashMap` uses `Node<K,V>[] table` (array of buckets). Each bucket is a **linked list** (or **red-black tree** when threshold exceeded).\nKey fields: `table` (bucket array), `size` (entry count), `threshold` (resize trigger = capacity × loadFactor), `loadFactor` (default **0.75**).\n\nDefault initial capacity: **16** (*must be power of 2*).'
         },
         {
           heading: 'Hash Function & Index Calculation',
-          body: 'Hash computation: `(h = key.hashCode()) ^ (h >>> 16)` — XORs high bits into low bits to reduce collisions when capacity is small (since index uses only low bits). Bucket index: `(n - 1) & hash` where n is capacity (power of 2) — equivalent to hash % n but faster. This is why capacity must be power of 2.'
+          body: 'Hash computation: `(h = key.hashCode()) ^ (h >>> 16)` — XORs high bits into low bits to reduce collisions when capacity is small (*since index uses only low bits*).\nBucket index: `(n - 1) & hash` where n is capacity (power of 2) — equivalent to `hash % n` but faster.\n\n*This is why capacity must be power of 2.*'
         },
         {
           heading: 'Put Operation',
-          body: '1) Compute hash and bucket index. 2) If bucket is empty, create new Node. 3) If bucket occupied, traverse chain: if key exists (equals() check), replace value; otherwise append. 4) If chain length ≥ TREEIFY_THRESHOLD (8) AND table length ≥ MIN_TREEIFY_CAPACITY (64), convert to red-black tree. 5) If size > threshold, resize. This makes worst-case lookup O(log n) instead of O(n).'
+          body: '1) Compute hash and bucket index. 2) If bucket is empty, create new `Node`. 3) If bucket occupied, traverse chain: if key exists (`equals()` check), replace value; otherwise append.\n4) If chain length ≥ **TREEIFY_THRESHOLD (8)** AND table length ≥ **MIN_TREEIFY_CAPACITY (64)**, convert to **red-black tree**.\n5) If size > threshold, resize.\n\nThis makes worst-case lookup **O(log n)** instead of O(n).'
         },
         {
           heading: 'Resize (Rehash)',
-          body: 'When size exceeds threshold (capacity × 0.75), table doubles in size. Each entry is rehashed to its new position. In Java 8+, rehashing is optimized: since new capacity is 2× old, each node either stays at the same index OR moves to index + oldCapacity. This is determined by the bit at `hash & oldCapacity`. The resize creates two lists per old bucket (lo/hi) and assigns them to new positions.'
+          body: 'When size exceeds threshold (capacity × 0.75), table **doubles** in size. Each entry is rehashed to its new position.\nIn Java 8+, rehashing is optimized: since new capacity is 2× old, each node either stays at the same index OR moves to **index + oldCapacity**. This is determined by the bit at `hash & oldCapacity`.\n\n*The resize creates two lists per old bucket (lo/hi) and assigns them to new positions.*'
         },
         {
           heading: 'Thread Safety Warning',
-          body: 'HashMap is NOT thread-safe. Concurrent put from multiple threads can cause infinite loops (Java 7 — head insertion during resize) or data loss (Java 8 — overwriting). For concurrent access: use ConcurrentHashMap (fine-grained locking, best performance), Collections.synchronizedMap (global lock, poor performance), or Hashtable (legacy, global lock, do NOT use).'
+          body: '`HashMap` is **NOT thread-safe**. Concurrent `put` from multiple threads can cause infinite loops (*Java 7 — head insertion during resize*) or data loss (*Java 8 — overwriting*).\n\nFor concurrent access: use `ConcurrentHashMap` (fine-grained locking, best performance), `Collections.synchronizedMap` (global lock, poor performance), or `Hashtable` (*legacy, global lock, do NOT use*).'
         },
         {
           heading: 'Step-by-Step: What Happens When You Put',
-          body: 'Example: `map.put("hello", 42)` on a default HashMap (capacity 16, load factor 0.75). (1) Compute hash: `"hello".hashCode()` returns 99162322 (0x05E91A52). Perturbation: `99162322 ^ (99162322 >>> 16)` = 99162322 ^ 1513 = 99163579 (0x05E91F3B). (2) Bucket index: `(16 - 1) & 99163579` = `15 & 99163579` = 11 (only the last 4 bits matter since capacity is 16). (3) Check bucket 11: if empty → create a new Node("hello", 42) and place it at table[11]. (4) If bucket 11 is occupied: walk the linked list. For each node, check `node.hash == hash && node.key.equals("hello")`. If found → replace value and return old value. If not found → append a new node at the end of the chain. (5) After insertion: if chain length ≥ 8 AND table capacity ≥ 64 → treeify the chain into a red-black tree. (6) Increment size. If size > threshold (16 × 0.75 = 12) → resize to 32, rehash all entries.'
+          body: 'Example: `map.put("hello", 42)` on a default `HashMap` (capacity 16, load factor 0.75).\n\n(1) Compute hash: `"hello".hashCode()` returns 99162322 (0x05E91A52). Perturbation: `99162322 ^ (99162322 >>> 16)` = 99162322 ^ 1513 = 99163579 (0x05E91F3B).\n(2) Bucket index: `(16 - 1) & 99163579` = `15 & 99163579` = **11** (*only the last 4 bits matter since capacity is 16*).\n(3) Check bucket 11: if empty → create a new `Node("hello", 42)` and place it at `table[11]`.\n(4) If bucket 11 is occupied: walk the linked list. For each node, check `node.hash == hash && node.key.equals("hello")`. If found → replace value and return old value. If not found → append a new node at the end of the chain.\n(5) After insertion: if chain length ≥ 8 AND table capacity ≥ 64 → **treeify** the chain into a red-black tree.\n(6) Increment size. If size > threshold (16 × 0.75 = **12**) → resize to 32, rehash all entries.'
         }
       ],
       codeExamples: [
@@ -344,31 +344,31 @@ System.out.printf("Good hashCode: %d ms%n", goodTime / 1_000_000);
       categoryId: 'collections',
       icon: '🔒',
       difficulty: 'Advanced',
-      tags: ['ConcurrentHashMap', 'Thread Safety', 'CAS', 'Lock Striping', 'Source Code'],
+      tags: ['ConcurrentHashMap', 'Thread Safety', 'CAS', 'Lock Striping', 'Source Code', 'Segment Locking', 'Concurrent', 'computeIfAbsent'],
       content: [
         {
           heading: 'Java 7 Implementation (Segment Locking)',
-          body: 'In Java 7, ConcurrentHashMap uses an array of Segments (each is a ReentrantLock protecting a portion of the table). Default: 16 segments = 16 concurrent writers. Each segment is essentially a mini HashMap. Reads are mostly lock-free using volatile reads. This approach limits scalability to concurrency level (number of segments).'
+          body: 'In Java 7, `ConcurrentHashMap` uses an array of **Segments** (each is a `ReentrantLock` protecting a portion of the table). Default: **16 segments** = 16 concurrent writers.\nEach segment is essentially a mini `HashMap`. Reads are mostly lock-free using `volatile` reads.\n\n*This approach limits scalability to concurrency level (number of segments).*'
         },
         {
           heading: 'Java 8+ Implementation (CAS + synchronized)',
-          body: 'Java 8 completely rewrote ConcurrentHashMap. Uses a single `Node<K,V>[] table` (like HashMap). Puts use CAS on empty buckets and `synchronized` on the first node of occupied buckets — locking per-bucket instead of per-segment. This is much finer-grained: concurrent writes to different buckets require no locking. Uses Unsafe/VarHandle for volatile array element access.'
+          body: 'Java 8 completely rewrote `ConcurrentHashMap`. Uses a single `Node<K,V>[] table` (like `HashMap`).\nPuts use **CAS** on empty buckets and `synchronized` on the first node of occupied buckets — **locking per-bucket** instead of per-segment. This is much finer-grained: concurrent writes to different buckets require no locking.\n\nUses `Unsafe`/`VarHandle` for volatile array element access.'
         },
         {
           heading: 'Key Operations',
-          body: 'get(): NO lock, uses volatile reads — very fast. put(): CAS if bucket empty; synchronized on head node if occupied. Treeification at threshold 8 (same as HashMap). size(): approximate — uses `baseCount` + `CounterCell[]` (like LongAdder) to avoid contention on a single counter. computeIfAbsent/compute/merge: atomic compound operations — the primary advantage over manual synchronization.'
+          body: '`get()`: **NO lock**, uses volatile reads — very fast. `put()`: CAS if bucket empty; `synchronized` on head node if occupied. Treeification at threshold 8 (*same as `HashMap`*).\n`size()`: approximate — uses `baseCount` + `CounterCell[]` (like `LongAdder`) to avoid contention on a single counter.\n\n`computeIfAbsent`/`compute`/`merge`: **atomic compound operations** — *the primary advantage over manual synchronization*.'
         },
         {
           heading: 'Why Not Hashtable or synchronizedMap',
-          body: 'Hashtable: every method is synchronized on the entire table — only one thread can read OR write at a time. Collections.synchronizedMap: wraps HashMap with a mutex — same global lock problem. ConcurrentHashMap: concurrent reads (no lock), concurrent writes to different buckets, no iterator fail-fast (weakly consistent iterators). Performance difference: 10-100x under high contention.'
+          body: '`Hashtable`: every method is `synchronized` on the entire table — *only one thread can read OR write at a time*.\n`Collections.synchronizedMap`: wraps `HashMap` with a mutex — *same global lock problem*.\n`ConcurrentHashMap`: concurrent reads (no lock), concurrent writes to different buckets, no iterator fail-fast (**weakly consistent iterators**).\n\nPerformance difference: **10-100x** under high contention.'
         },
         {
           heading: 'Important Caveats',
-          body: 'size() and isEmpty() may be inaccurate during concurrent modifications (best-effort). Iterators are weakly consistent — reflect state at or after creation, don\'t throw ConcurrentModificationException. Null keys and null values are NOT allowed (unlike HashMap) — null is used internally as a sentinel during resize. The single-most-asked concurrent collection in Java interviews.'
+          body: '`size()` and `isEmpty()` may be inaccurate during concurrent modifications (*best-effort*). Iterators are **weakly consistent** — reflect state at or after creation, don\'t throw `ConcurrentModificationException`.\n\n**Null keys and null values are NOT allowed** (unlike `HashMap`) — `null` is used internally as a sentinel during resize.\n*The single-most-asked concurrent collection in Java interviews.*'
         },
         {
           heading: 'Real-World Analogy',
-          body: 'Imagine a library with many bookshelves. Hashtable is like a library with a single entrance gate and one librarian — only one person can enter at a time, whether to read or shelve a book. Everyone else waits outside. Collections.synchronizedMap is the same: one lock for the whole building. ConcurrentHashMap (Java 8+) is like a library where each shelf has its own lock. Multiple readers can browse any shelf simultaneously with no lock at all (volatile reads). Writers only lock the specific shelf they are modifying. Two people can shelve books on different shelves at the same time. If a shelf gets too crowded (chain length ≥ 8), the librarian reorganizes that shelf into a sorted index (treeification) for faster lookups. The result: under high traffic, ConcurrentHashMap serves 10-100x more visitors than the single-gate library.'
+          body: '**Hashtable** — *like a library with a single entrance gate and one librarian. Only one person can enter at a time, whether to read or shelve a book. Everyone else waits outside.*\n\n**Collections.synchronizedMap** — *the same: one lock for the whole building.*\n\n**ConcurrentHashMap** (Java 8+) — *like a library where each shelf has its own lock. Multiple readers can browse any shelf simultaneously with no lock at all (volatile reads). Writers only lock the specific shelf they are modifying. Two people can shelve books on different shelves at the same time.*\n\n*If a shelf gets too crowded (chain length ≥ 8), the librarian reorganizes that shelf into a sorted index (treeification) for faster lookups. The result: under high traffic, `ConcurrentHashMap` serves 10-100x more visitors than the single-gate library.*'
         }
       ],
       codeExamples: [
@@ -448,23 +448,23 @@ registry.compute("listeners", (key, existing) -> {
       categoryId: 'collections',
       icon: '🔗',
       difficulty: 'Intermediate',
-      tags: ['LinkedHashMap', 'LRU Cache', 'Insertion Order', 'Access Order'],
+      tags: ['LinkedHashMap', 'LRU Cache', 'Insertion Order', 'Access Order', 'Doubly-Linked List', 'Cache Eviction'],
       content: [
         {
           heading: 'How LinkedHashMap Works',
-          body: 'LinkedHashMap extends HashMap and maintains a doubly-linked list running through all entries. This preserves insertion order (default) or access order (when `accessOrder=true`). Each entry has `before` and `after` pointers in addition to HashMap\'s `next` pointer. Performance is same as HashMap (O(1) put/get) with slightly higher memory overhead for the linked list pointers.'
+          body: '`LinkedHashMap` extends `HashMap` and maintains a **doubly-linked list** running through all entries. This preserves **insertion order** (default) or **access order** (when `accessOrder=true`).\nEach entry has `before` and `after` pointers in addition to `HashMap`\'s `next` pointer.\n\nPerformance is same as `HashMap` (O(1) put/get) with *slightly higher memory overhead for the linked list pointers*.'
         },
         {
           heading: 'Insertion Order vs Access Order',
-          body: 'Insertion order (default): entries iterate in the order they were first put. Access order (`new LinkedHashMap<>(16, 0.75f, true)`): entries are moved to the end on every get/put/compute. This makes the least recently used entry always at the head — perfect for LRU caches.'
+          body: '**Insertion order** (default): entries iterate in the order they were first put.\n**Access order** (`new LinkedHashMap<>(16, 0.75f, true)`): entries are moved to the end on every `get`/`put`/`compute`.\n\nThis makes the **least recently used** entry always at the head — *perfect for LRU caches*.'
         },
         {
           heading: 'Building an LRU Cache',
-          body: 'Override `removeEldestEntry(Map.Entry)` to automatically evict when size exceeds the limit. This method is called after every put. Combined with access-order, this creates a simple but effective LRU cache. For thread-safe LRU, wrap with Collections.synchronizedMap() or use ConcurrentLinkedHashMap / Caffeine library for production use.'
+          body: 'Override `removeEldestEntry(Map.Entry)` to automatically evict when size exceeds the limit. This method is called after every `put`.\nCombined with access-order, this creates a simple but effective **LRU cache**.\n\nFor thread-safe LRU, wrap with `Collections.synchronizedMap()` or use **ConcurrentLinkedHashMap** / **Caffeine** library for production use.'
         },
         {
           heading: 'How Access-Order Works',
-          body: 'When you create a LinkedHashMap with `accessOrder=true`, every get(), put(), or compute() on an existing key moves that entry to the tail of the doubly-linked list. Step-by-step example: Start with entries [A→1, B→2, C→3] (head→tail). Call `get("A")`: entry A is unlinked from its position (B.before is updated to point past A, etc.) and re-linked at the tail. The list is now [B→2, C→3, A→1]. Call `get("B")`: B moves to tail → [C→3, A→1, B→2]. Call `put("D", 4)`: new entry appended at tail → [C→3, A→1, B→2, D→4]. Call `put("C", 99)`: existing key C is updated AND moved to tail → [A→1, B→2, D→4, C→99]. The head of the list is always the Least Recently Used entry. With `removeEldestEntry()`, this head entry is the one evicted when the cache is full.'
+          body: 'When you create a `LinkedHashMap` with `accessOrder=true`, every `get()`, `put()`, or `compute()` on an existing key moves that entry to the **tail** of the doubly-linked list.\n\nStep-by-step example: Start with entries [A→1, B→2, C→3] (head→tail).\nCall `get("A")`: entry A is unlinked from its position and re-linked at the tail. The list is now [B→2, C→3, A→1].\nCall `get("B")`: B moves to tail → [C→3, A→1, B→2].\nCall `put("D", 4)`: new entry appended at tail → [C→3, A→1, B→2, D→4].\nCall `put("C", 99)`: existing key C is updated AND moved to tail → [A→1, B→2, D→4, C→99].\n\nThe head of the list is always the **Least Recently Used** entry. With `removeEldestEntry()`, this head entry is the one evicted when the cache is full.'
         }
       ],
       codeExamples: [
@@ -539,27 +539,27 @@ for (var entry : accessOrder.entrySet()) {
       categoryId: 'collections',
       icon: '⏫',
       difficulty: 'Intermediate',
-      tags: ['PriorityQueue', 'Heap', 'Binary Heap', 'Source Code'],
+      tags: ['PriorityQueue', 'Heap', 'Binary Heap', 'Source Code', 'Sift Up', 'Sift Down', 'Top-K', 'Dijkstra'],
       content: [
         {
           heading: 'Internal Structure',
-          body: 'PriorityQueue is backed by a binary min-heap stored in `Object[] queue`. The smallest element (by natural order or Comparator) is always at index 0. Parent of index i: `(i - 1) / 2`. Left child: `2 * i + 1`. Right child: `2 * i + 2`. Default initial capacity: 11. Not thread-safe — use PriorityBlockingQueue for concurrent access.'
+          body: '`PriorityQueue` is backed by a **binary min-heap** stored in `Object[] queue`. The smallest element (by natural order or `Comparator`) is always at index 0.\nParent of index i: `(i - 1) / 2`. Left child: `2 * i + 1`. Right child: `2 * i + 2`.\n\nDefault initial capacity: **11**. *Not thread-safe — use `PriorityBlockingQueue` for concurrent access.*'
         },
         {
           heading: 'Key Operations',
-          body: 'offer()/add(): O(log n) — add to end, sift up to restore heap property. poll(): O(log n) — remove root, move last to root, sift down. peek(): O(1) — return root without removal. remove(Object): O(n) — linear search + O(log n) sift. contains(): O(n). The heap is NOT fully sorted — only the root is guaranteed to be the min/max.'
+          body: '`offer()`/`add()`: **O(log n)** — add to end, sift up to restore heap property.\n`poll()`: **O(log n)** — remove root, move last to root, sift down.\n`peek()`: **O(1)** — return root without removal.\n`remove(Object)`: **O(n)** — linear search + O(log n) sift. `contains()`: **O(n)**.\n\nThe heap is **NOT fully sorted** — *only the root is guaranteed to be the min/max*.'
         },
         {
           heading: 'Sift Up and Sift Down',
-          body: 'Sift up (after insertion): compare with parent, swap if smaller, repeat until heap property restored or root reached. Sift down (after removal): compare with smaller child, swap if larger, repeat until heap property restored or leaf reached. These operations maintain the heap invariant in O(log n) time.'
+          body: '**Sift up** (after insertion): compare with parent, swap if smaller, repeat until heap property restored or root reached.\n**Sift down** (after removal): compare with smaller child, swap if larger, repeat until heap property restored or leaf reached.\n\nThese operations maintain the heap invariant in **O(log n)** time.'
         },
         {
           heading: 'Common Use Cases',
-          body: 'Task scheduling (process highest priority first). Dijkstra\'s shortest path algorithm. Merge K sorted lists. Find the Kth largest element (min-heap of size K). Event-driven simulation. For max-heap: `new PriorityQueue<>(Comparator.reverseOrder())` or `new PriorityQueue<>((a, b) -> b - a)`.'
+          body: 'Task scheduling (*process highest priority first*). **Dijkstra\'s** shortest path algorithm. Merge K sorted lists. Find the **Kth largest element** (min-heap of size K). Event-driven simulation.\n\nFor max-heap: `new PriorityQueue<>(Comparator.reverseOrder())` or `new PriorityQueue<>((a, b) -> b - a)`.'
         },
         {
           heading: 'Visual Walkthrough',
-          body: 'Inserting 5, 3, 8, 1, 4 into a min-heap (PriorityQueue). (1) Insert 5: heap = [5]. Tree: just the root `5`. (2) Insert 3: placed at index 1 (left child of root). 3 < 5 → sift up, swap with parent. Heap = [3, 5]. Tree: `3` at root, `5` as left child. (3) Insert 8: placed at index 2 (right child of root). 8 > 3 → no sift needed. Heap = [3, 5, 8]. Tree: `3` at root, `5` left, `8` right. (4) Insert 1: placed at index 3 (left child of `5`). 1 < 5 → swap → 1 < 3 → swap. Heap = [1, 3, 8, 5]. Tree: `1` at root, `3` left, `8` right, `5` as left child of `3`. (5) Insert 4: placed at index 4 (right child of `3`). 4 > 3 → no sift needed. Final heap = [1, 3, 8, 5, 4]. Tree: `1` at root; `3` (left) with children `5`, `4`; `8` (right) with no children. Calling poll() returns `1`, moves `4` to root, then sifts down: 4 > 3 → swap with `3`. Result: [3, 4, 8, 5].'
+          body: 'Inserting 5, 3, 8, 1, 4 into a min-heap (`PriorityQueue`).\n\n(1) Insert 5: heap = [5]. Tree: just the root `5`.\n(2) Insert 3: placed at index 1 (left child of root). 3 < 5 → **sift up**, swap with parent. Heap = [3, 5].\n(3) Insert 8: placed at index 2 (right child of root). 8 > 3 → no sift needed. Heap = [3, 5, 8].\n(4) Insert 1: placed at index 3 (left child of `5`). 1 < 5 → swap → 1 < 3 → swap. Heap = [1, 3, 8, 5].\n(5) Insert 4: placed at index 4 (right child of `3`). 4 > 3 → no sift needed. Final heap = **[1, 3, 8, 5, 4]**.\n\nCalling `poll()` returns `1`, moves `4` to root, then **sifts down**: 4 > 3 → swap with `3`. Result: [3, 4, 8, 5].'
         }
       ],
       codeExamples: [
@@ -648,31 +648,31 @@ System.out.println(mergeKSortedLists(sorted));
       categoryId: 'collections',
       icon: '🚫',
       difficulty: 'Intermediate',
-      tags: ['Best Practices', 'Pitfalls', 'Fail-Fast', 'Immutable Collections'],
+      tags: ['Best Practices', 'Pitfalls', 'Fail-Fast', 'Immutable Collections', 'ConcurrentModificationException', 'Arrays.asList', 'removeIf', 'List.of'],
       content: [
         {
           heading: 'Concurrent Modification Exception',
-          body: 'Iterators from ArrayList/HashMap are fail-fast — they throw ConcurrentModificationException if the collection is structurally modified during iteration (except through the iterator itself). Solution: use `iterator.remove()`, collect items to remove then call `removeAll()`, use `removeIf()`, or use concurrent collections.'
+          body: 'Iterators from `ArrayList`/`HashMap` are **fail-fast** — they throw `ConcurrentModificationException` if the collection is structurally modified during iteration (*except through the iterator itself*).\n\nSolution: use `iterator.remove()`, collect items to remove then call `removeAll()`, use `removeIf()`, or use concurrent collections.'
         },
         {
           heading: 'Arrays.asList() Traps',
-          body: '`Arrays.asList()` returns a fixed-size list backed by the original array — `add()` and `remove()` throw UnsupportedOperationException. Changes to the list modify the array and vice versa. For primitive arrays, `Arrays.asList(new int[]{1,2,3})` creates a `List<int[]>` with ONE element (the array itself), not `List<Integer>`. Use `List.of()` (Java 9+) for true immutable lists, or `new ArrayList<>(Arrays.asList(...))` for mutable copies.'
+          body: '`Arrays.asList()` returns a **fixed-size list** backed by the original array — `add()` and `remove()` throw `UnsupportedOperationException`. *Changes to the list modify the array and vice versa.*\n\nFor primitive arrays, `Arrays.asList(new int[]{1,2,3})` creates a `List<int[]>` with **ONE element** (the array itself), not `List<Integer>`.\nUse `List.of()` (Java 9+) for true immutable lists, or `new ArrayList<>(Arrays.asList(...))` for mutable copies.'
         },
         {
           heading: 'hashCode/equals Pitfalls',
-          body: 'Using a mutable object as a HashMap key, then modifying the fields used in hashCode() — the entry becomes unreachable (wrong bucket). Always use immutable keys (String, Integer, records). If you override equals() without hashCode(), objects that are "equal" may end up in different buckets. HashSet.contains() can return false for an element that was just added if hashCode is inconsistent.'
+          body: 'Using a mutable object as a `HashMap` key, then modifying the fields used in `hashCode()` — the entry becomes **unreachable** (wrong bucket). Always use immutable keys (`String`, `Integer`, records).\n\nIf you override `equals()` without `hashCode()`, objects that are "equal" may end up in different buckets. *`HashSet.contains()` can return false for an element that was just added if `hashCode` is inconsistent.*'
         },
         {
           heading: 'Performance Anti-Patterns',
-          body: 'Using LinkedList when ArrayList works fine (almost always). Using Vector/Stack (legacy, synchronized, use ArrayList/ArrayDeque). Not pre-sizing ArrayList when the size is known. Using contains() on a List in a loop (O(n) each time — use Set). Iterating a HashMap to find a value (use BiMap or reverse index). Boxing overhead: use specialized collections (Eclipse Collections, Trove) for primitive-heavy workloads.'
+          body: 'Using `LinkedList` when `ArrayList` works fine (*almost always*). Using `Vector`/`Stack` (*legacy, synchronized, use `ArrayList`/`ArrayDeque`*).\nNot pre-sizing `ArrayList` when the size is known. Using `contains()` on a `List` in a loop (O(n) each time — use `Set`).\n\nIterating a `HashMap` to find a value (*use BiMap or reverse index*). Boxing overhead: use specialized collections (**Eclipse Collections**, **Trove**) for primitive-heavy workloads.'
         },
         {
           heading: 'Immutable Collections',
-          body: 'Java 9+ `List.of()`, `Set.of()`, `Map.of()`: truly immutable, null-hostile (throw NPE), structurally immutable. `Collections.unmodifiableList()`: wraps a mutable list — changes to the original are reflected! For safe publication, use `List.copyOf()` (Java 10+) which copies elements. Guava `ImmutableList/Map/Set` are also excellent choices.'
+          body: 'Java 9+ `List.of()`, `Set.of()`, `Map.of()`: truly **immutable**, null-hostile (throw NPE), structurally immutable.\n`Collections.unmodifiableList()`: wraps a mutable list — *changes to the original are reflected!*\n\nFor safe publication, use `List.copyOf()` (Java 10+) which copies elements. Guava `ImmutableList`/`ImmutableMap`/`ImmutableSet` are also excellent choices.'
         },
         {
           heading: 'Debugging Tips',
-          body: 'ConcurrentModificationException: (1) Check the stack trace — it shows exactly where the iterator was created and where the modification happened. (2) The exception does NOT mean multi-threaded access — the most common cause is modifying a collection inside a for-each loop in a single thread. (3) Search for patterns like `for (X x : collection) { collection.remove(x); }` — this always fails. (4) HashMap/TreeMap iterators track a `modCount` field; any put/remove increments it, and the iterator checks it on every `next()` call. (5) For silent data corruption (no exception but wrong results): check if mutable objects are used as Map keys or Set elements — modifying them after insertion makes them "invisible" because they are in the wrong bucket. Use your debugger to inspect the internal `table` array of HashMap and verify which bucket the key lands in. (6) For NullPointerException in collections: check if you are using `Map.of()` or `Set.of()` (null-hostile) vs `HashMap`/`HashSet` (null-tolerant). (7) For UnsupportedOperationException: check if the list comes from `Arrays.asList()`, `List.of()`, or `Collections.unmodifiableList()` — all prevent structural modification.'
+          body: '`ConcurrentModificationException`: (1) Check the stack trace — it shows exactly where the iterator was created and where the modification happened. (2) The exception does **NOT** mean multi-threaded access — *the most common cause is modifying a collection inside a for-each loop in a single thread*. (3) Search for patterns like `for (X x : collection) { collection.remove(x); }` — this always fails.\n\n(4) `HashMap`/`TreeMap` iterators track a `modCount` field; any put/remove increments it, and the iterator checks it on every `next()` call.\n(5) For **silent data corruption** (no exception but wrong results): check if mutable objects are used as `Map` keys or `Set` elements — modifying them after insertion makes them "invisible" because they are in the wrong bucket.\n\n(6) For `NullPointerException` in collections: check if you are using `Map.of()` or `Set.of()` (*null-hostile*) vs `HashMap`/`HashSet` (*null-tolerant*).\n(7) For `UnsupportedOperationException`: check if the list comes from `Arrays.asList()`, `List.of()`, or `Collections.unmodifiableList()` — *all prevent structural modification*.'
         }
       ],
       codeExamples: [

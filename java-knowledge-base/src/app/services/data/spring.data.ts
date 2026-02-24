@@ -8,27 +8,27 @@ export const SPRING_TOPICS: Topic[] = [
       categoryId: 'spring',
       icon: '🚀',
       difficulty: 'Intermediate',
-      tags: ['Spring Boot', 'Auto-Configuration', 'Starters', 'Profiles'],
+      tags: ['Spring Boot', 'Auto-Configuration', 'Starters', 'Profiles', 'Actuator', 'Embedded Server', 'Properties', 'Microservices'],
       content: [
         {
           heading: 'Auto-Configuration',
-          body: 'Spring Boot auto-configuration automatically configures beans based on classpath contents, property settings, and existing beans. Uses @Conditional annotations (ConditionalOnClass, ConditionalOnMissingBean, etc.). You can see active configurations with --debug flag or /actuator/conditions. Custom auto-configuration: create @Configuration class + register in META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports.'
+          body: 'Spring Boot **auto-configuration** automatically configures beans based on classpath contents, property settings, and existing beans. Uses `@Conditional` annotations (`@ConditionalOnClass`, `@ConditionalOnMissingBean`, etc.).\n\nYou can see active configurations with `--debug` flag or `/actuator/conditions`.\n\nCustom auto-configuration: create `@Configuration` class + register in `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports`.'
         },
         {
           heading: 'Starters',
-          body: 'Starters are curated dependency sets: spring-boot-starter-web (Tomcat + Spring MVC), spring-boot-starter-data-jpa (Hibernate + Spring Data), spring-boot-starter-security, spring-boot-starter-test. They manage compatible versions through the spring-boot-dependencies BOM (Bill of Materials). Never specify versions for managed dependencies — let the BOM handle it.'
+          body: '**Starters** are curated dependency sets: `spring-boot-starter-web` *(Tomcat + Spring MVC)*, `spring-boot-starter-data-jpa` *(Hibernate + Spring Data)*, `spring-boot-starter-security`, `spring-boot-starter-test`.\n\nThey manage compatible versions through the **spring-boot-dependencies BOM** (Bill of Materials). *Never specify versions for managed dependencies — let the BOM handle it.*'
         },
         {
           heading: 'Configuration & Profiles',
-          body: 'application.properties or application.yml configure the app. Profiles: application-{profile}.yml for environment-specific config. Activate: `spring.profiles.active=production`. @ConfigurationProperties binds properties to typed POJOs (type-safe, validated). Property precedence: command line → env variables → application-{profile} → application → defaults. Use @Value for simple cases, @ConfigurationProperties for groups.'
+          body: '`application.properties` or `application.yml` configure the app. Profiles: `application-{profile}.yml` for environment-specific config. Activate: `spring.profiles.active=production`.\n\n`@ConfigurationProperties` binds properties to typed POJOs *(type-safe, validated)*. Property precedence: command line → env variables → application-{profile} → application → defaults.\n\nUse `@Value` for simple cases, `@ConfigurationProperties` for groups.'
         },
         {
           heading: 'Production Features',
-          body: 'Spring Boot Actuator: health checks (/health), metrics (/metrics), info (/info), env (/env), thread dump (/threaddump). Graceful shutdown: `server.shutdown=graceful`. Micrometer: metrics facade (like SLF4J for metrics) — supports Prometheus, Datadog, CloudWatch. DevTools: auto-restart, live reload (dev only). GraalVM native image support since Spring Boot 3.'
+          body: '**Spring Boot Actuator**: health checks (`/health`), metrics (`/metrics`), info (`/info`), env (`/env`), thread dump (`/threaddump`). Graceful shutdown: `server.shutdown=graceful`.\n\n**Micrometer**: metrics facade *(like SLF4J for metrics)* — supports Prometheus, Datadog, CloudWatch.\n\n**DevTools**: auto-restart, live reload *(dev only)*. **GraalVM** native image support since Spring Boot 3.'
         },
         {
           heading: 'Common Mistakes',
-          body: '1) Field injection everywhere — using @Autowired on fields hides dependencies, prevents final fields, and makes unit testing hard. Use constructor injection instead. 2) Catching exceptions in controllers — scattering try-catch blocks across every controller method. Use @ControllerAdvice for centralized exception handling. 3) Not using profiles — hardcoding configuration instead of externalizing with application-{profile}.yml. 4) Exposing entities as API responses — returning JPA entities directly causes lazy loading issues, circular references, and couples your API to your database schema. Use DTOs. 5) Ignoring connection pool tuning — the default HikariCP pool size (10) may be too small for production; set spring.datasource.hikari.maximum-pool-size based on load testing. 6) Blocking in WebFlux — mixing blocking calls (JDBC, Thread.sleep) in a reactive pipeline starves the event loop. Use subscribeOn(Schedulers.boundedElastic()) or switch to R2DBC. 7) Forgetting @Transactional boundaries — placing @Transactional on private methods (doesn\'t work due to proxy), or on methods called internally within the same class (self-invocation bypasses proxy).'
+          body: '1) Field injection everywhere — using `@Autowired` on fields hides dependencies, prevents final fields, and makes unit testing hard. Use **constructor injection** instead.\n\n2) Catching exceptions in controllers — scattering try-catch blocks across every controller method. Use `@ControllerAdvice` for centralized exception handling.\n\n3) Not using profiles — hardcoding configuration instead of externalizing with `application-{profile}.yml`.\n\n4) Exposing entities as API responses — returning JPA entities directly causes lazy loading issues, circular references, and couples your API to your database schema. Use **DTOs**.\n\n5) Ignoring connection pool tuning — the default **HikariCP** pool size (10) may be too small for production; set `spring.datasource.hikari.maximum-pool-size` based on load testing.\n\n6) Blocking in WebFlux — mixing blocking calls (`JDBC`, `Thread.sleep`) in a reactive pipeline starves the event loop. Use `subscribeOn(Schedulers.boundedElastic())` or switch to **R2DBC**.\n\n7) Forgetting `@Transactional` boundaries — placing `@Transactional` on private methods *(doesn\'t work due to proxy)*, or on methods called internally within the same class *(self-invocation bypasses proxy)*.'
         }
       ],
       codeExamples: [
@@ -136,27 +136,27 @@ public UserDto getById(@PathVariable Long id) {
       categoryId: 'spring',
       icon: '💉',
       difficulty: 'Beginner',
-      tags: ['DI', 'IoC', 'Bean Lifecycle', 'Spring Container', 'Scope'],
+      tags: ['DI', 'IoC', 'Bean Lifecycle', 'Spring Container', 'Scope', 'Dependency Injection', 'ApplicationContext', 'BeanFactory', 'Autowired', 'Component Scan'],
       content: [
         {
           heading: 'IoC and DI',
-          body: 'Inversion of Control (IoC): the framework controls object creation and wiring, not your code. Dependency Injection (DI): dependencies are provided (\"injected\") rather than created by the class itself. Benefits: loose coupling, testability (mock dependencies), configurability (swap implementations via profiles).'
+          body: '**Inversion of Control** (IoC): the framework controls object creation and wiring, not your code.\n\n**Dependency Injection** (DI): dependencies are provided (\"injected\") rather than created by the class itself.\n\nBenefits: loose coupling, testability *(mock dependencies)*, configurability *(swap implementations via profiles)*.'
         },
         {
           heading: 'Injection Types',
-          body: 'Constructor injection (recommended): dependencies as constructor parameters — fields can be final, clear required dependencies, easy to test. @Autowired optional since Spring 4.3 for single constructors. Setter injection: for optional dependencies. Field injection (@Autowired on fields): discouraged — hides dependencies, hard to test, can\'t make fields final. Use @Qualifier or @Primary to resolve ambiguity when multiple beans of same type exist.'
+          body: '**Constructor injection** *(recommended)*: dependencies as constructor parameters — fields can be final, clear required dependencies, easy to test. `@Autowired` optional since Spring 4.3 for single constructors.\n\n**Setter injection**: for optional dependencies.\n\n**Field injection** (`@Autowired` on fields): *discouraged — hides dependencies, hard to test, can\'t make fields final*.\n\nUse `@Qualifier` or `@Primary` to resolve ambiguity when multiple beans of same type exist.'
         },
         {
           heading: 'Bean Scopes',
-          body: 'singleton (default): one instance per container. prototype: new instance per injection point. request: one per HTTP request. session: one per HTTP session. application: one per ServletContext. Custom scopes possible. Warning: injecting prototype into singleton → always gets the same prototype instance! Fix: use ObjectProvider<T>, @Lookup method, or Provider<T>.'
+          body: '**singleton** *(default)*: one instance per container. **prototype**: new instance per injection point. **request**: one per HTTP request. **session**: one per HTTP session. **application**: one per `ServletContext`. Custom scopes possible.\n\nWarning: injecting prototype into singleton → always gets the same prototype instance! Fix: use `ObjectProvider<T>`, `@Lookup` method, or `Provider<T>`.'
         },
         {
           heading: 'Bean Lifecycle',
-          body: 'Instantiation → populate properties (DI) → BeanNameAware/BeanFactoryAware → @PostConstruct → InitializingBean.afterPropertiesSet() → custom init → ready → @PreDestroy → DisposableBean.destroy() → custom destroy. Use @PostConstruct for initialization logic (data loading, validation). Use @PreDestroy for cleanup (close connections, release resources). BeanPostProcessor hooks allow cross-cutting concerns (AOP proxy creation happens here).'
+          body: 'Instantiation → populate properties (DI) → `BeanNameAware`/`BeanFactoryAware` → `@PostConstruct` → `InitializingBean.afterPropertiesSet()` → custom init → ready → `@PreDestroy` → `DisposableBean.destroy()` → custom destroy.\n\nUse `@PostConstruct` for initialization logic *(data loading, validation)*. Use `@PreDestroy` for cleanup *(close connections, release resources)*.\n\n`BeanPostProcessor` hooks allow cross-cutting concerns *(AOP proxy creation happens here)*.'
         },
         {
           heading: 'Real-World Analogy',
-          body: 'Dependency Injection is like a restaurant kitchen. The chef (your service class) does not go shopping for ingredients — instead, the ingredients (dependencies) are delivered to the kitchen by a supplier (the Spring IoC container). The chef declares what they need: "I require butter, eggs, and flour" (constructor parameters). The restaurant manager (Spring) reads the recipe (configuration) and delivers the right ingredients before the chef starts cooking. This means the chef can focus on cooking (business logic) without worrying about where the ingredients come from. For testing, you can deliver mock ingredients (test doubles) — the chef cooks the same way regardless. If you switch from butter to margarine (swap implementations), the chef\'s recipe doesn\'t change — you just update the delivery manifest (Spring configuration or profile). Constructor injection is like a prep list posted on the kitchen door: everyone can see exactly what\'s needed before service starts.'
+          body: '**Dependency Injection** is like a restaurant kitchen. *The chef (your service class) does not go shopping for ingredients — instead, the ingredients (dependencies) are delivered to the kitchen by a supplier (the Spring IoC container).*\n\n*The chef declares what they need: "I require butter, eggs, and flour" (constructor parameters). The restaurant manager (Spring) reads the recipe (configuration) and delivers the right ingredients before the chef starts cooking.*\n\n*This means the chef can focus on cooking (business logic) without worrying about where the ingredients come from.* For testing, you can deliver mock ingredients (test doubles) — *the chef cooks the same way regardless*.\n\n*If you switch from butter to margarine (swap implementations), the chef\'s recipe doesn\'t change — you just update the delivery manifest (Spring configuration or profile).*\n\n**Constructor injection** is like a prep list posted on the kitchen door: *everyone can see exactly what\'s needed before service starts.*'
         }
       ],
       codeExamples: [

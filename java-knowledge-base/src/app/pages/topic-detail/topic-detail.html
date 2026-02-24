@@ -1,25 +1,28 @@
-@if (topic) {
+@if (topic(); as t) {
   <section class="topic-hero">
-    <div class="container">
-      <div class="breadcrumb">
+    <div class="container-xl">
+      <nav class="breadcrumb d-flex align-items-center gap-2" aria-label="Breadcrumb">
         <a routerLink="/">Home</a>
-        <span class="sep">/</span>
-        @if (category) {
-          <a [routerLink]="['/category', category.id]">{{ category.name }}</a>
-          <span class="sep">/</span>
+        <span class="sep" aria-hidden="true">/</span>
+        @if (category(); as cat) {
+          <a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>
+          <span class="sep" aria-hidden="true">/</span>
         }
-        <span class="current">{{ topic.title }}</span>
-      </div>
-      <div class="topic-meta">
-        <span class="topic-icon">{{ topic.icon }}</span>
+        <span class="current" aria-current="page">{{ t.title }}</span>
+      </nav>
+      <div class="topic-meta d-flex align-items-start gap-3">
+        <span class="topic-icon flex-shrink-0">{{ t.icon }}</span>
         <div>
-          <h1>{{ topic.title }}</h1>
-          <p class="topic-desc">{{ topic.description }}</p>
-          <div class="meta-row">
-            <span class="difficulty" [class]="getDifficultyClass(topic.difficulty)">{{ topic.difficulty }}</span>
-            <div class="tags">
-              @for (tag of topic.tags; track tag) {
-                <span class="tag">{{ tag }}</span>
+          <h1>{{ t.title }}</h1>
+          <p class="topic-desc">{{ t.description }}</p>
+          <div class="meta-row d-flex align-items-center gap-2 flex-wrap">
+            <mat-chip [class]="getDifficultyClass(t.difficulty)" highlighted>
+              <i [class]="getDifficultyIcon(t.difficulty)"></i>
+              {{ t.difficulty }}
+            </mat-chip>
+            <div class="tags d-flex flex-wrap gap-1">
+              @for (tag of t.tags; track tag) {
+                <mat-chip class="tag-chip">{{ tag }}</mat-chip>
               }
             </div>
           </div>
@@ -29,62 +32,78 @@
   </section>
 
   <div class="content-layout">
-    <div class="container">
-      <div class="content-grid">
-        <main class="article-content">
-          @for (section of topic.content; track section.heading) {
-            <div class="content-section">
-              <h2>{{ section.heading }}</h2>
-              <p>{{ section.body }}</p>
-            </div>
-          }
-
-          @if (topic.codeExamples && topic.codeExamples.length > 0) {
-            <div class="code-examples">
-              <h2>Code Examples</h2>
-              @for (example of topic.codeExamples; track example.title) {
-                <app-code-block
-                  [code]="example.code"
-                  [language]="example.language"
-                  [title]="example.title"
-                />
-              }
-            </div>
-          }
-        </main>
-
-        <aside class="sidebar">
-          <div class="toc">
-            <h3>On This Page</h3>
-            @for (section of topic.content; track section.heading) {
-              <a class="toc-link">{{ section.heading }}</a>
+    <div class="container-xl">
+      <div class="row g-4">
+        <div class="col-12 col-lg-8 col-xl-9">
+          <main class="article-content">
+            @for (section of t.content; track section.heading) {
+              <div class="content-section">
+                <h2>{{ section.heading }}</h2>
+                <div class="body-text" [innerHTML]="section.body | formatBody"></div>
+              </div>
             }
-            @if (topic.codeExamples && topic.codeExamples.length > 0) {
-              <a class="toc-link">Code Examples</a>
-            }
-          </div>
 
-          @if (relatedTopics.length > 0) {
-            <div class="related">
-              <h3>Related Topics</h3>
-              @for (related of relatedTopics; track related.id) {
-                <a [routerLink]="['/topic', related.id]" class="related-link">
-                  <span class="related-icon">{{ related.icon }}</span>
-                  <span>{{ related.title }}</span>
-                </a>
-              }
-            </div>
-          }
-        </aside>
+            @if (t.codeExamples && t.codeExamples.length > 0) {
+              <div class="code-examples">
+                <h2>Code Examples</h2>
+                @for (example of t.codeExamples; track example.title) {
+                  <app-code-block
+                    [code]="example.code"
+                    [language]="example.language"
+                    [title]="example.title"
+                  />
+                }
+              </div>
+            }
+          </main>
+        </div>
+
+        <div class="col-12 col-lg-4 col-xl-3">
+          <aside class="sidebar d-flex flex-column gap-3">
+            <mat-card appearance="outlined" class="sidebar-card">
+              <mat-card-content>
+                <h3 class="d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-list sidebar-icon"></i>
+                  On This Page
+                </h3>
+                @for (section of t.content; track section.heading) {
+                  <a class="toc-link">{{ section.heading }}</a>
+                }
+                @if (t.codeExamples && t.codeExamples.length > 0) {
+                  <a class="toc-link">Code Examples</a>
+                }
+              </mat-card-content>
+            </mat-card>
+
+            @if (relatedTopics().length > 0) {
+              <mat-card appearance="outlined" class="sidebar-card">
+                <mat-card-content>
+                  <h3 class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-diagram-project sidebar-icon"></i>
+                    Related Topics
+                  </h3>
+                  @for (related of relatedTopics(); track related.id) {
+                    <a [routerLink]="['/topic', related.id]" class="related-link d-flex align-items-center gap-2">
+                      <span class="related-icon">{{ related.icon }}</span>
+                      <span>{{ related.title }}</span>
+                      <i class="fa-solid fa-chevron-right link-arrow ms-auto"></i>
+                    </a>
+                  }
+                </mat-card-content>
+              </mat-card>
+            }
+          </aside>
+        </div>
       </div>
     </div>
   </div>
 } @else {
-  <section class="not-found">
-    <div class="container">
+  <section class="not-found text-center">
+    <div class="container-xl">
+      <i class="fa-solid fa-magnifying-glass-minus not-found-icon d-block"></i>
       <h1>Topic Not Found</h1>
       <p>The topic you're looking for doesn't exist.</p>
-      <a routerLink="/" class="back-link-btn">Back to Home</a>
+      <a routerLink="/" mat-flat-button class="back-btn">Back to Home</a>
     </div>
   </section>
 }

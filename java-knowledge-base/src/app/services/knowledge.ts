@@ -14,10 +14,7 @@ import { INTERVIEW_QA_TOPICS } from './data/interview-qa.data';
 
 @Injectable({ providedIn: 'root' })
 export class KnowledgeService {
-  private categories: Category[] = CATEGORIES;
-  private featuredArticles: FeaturedArticle[] = FEATURED_ARTICLES;
-
-  private topics: Topic[] = [
+  private readonly topics: Topic[] = [
     ...CORE_JAVA_TOPICS,
     ...COLLECTIONS_TOPICS,
     ...CONCURRENCY_TOPICS,
@@ -29,27 +26,51 @@ export class KnowledgeService {
     ...INTERVIEW_QA_TOPICS,
   ];
 
-  getCategories(): Category[] {
-    return this.categories.map(cat => ({
+  private readonly topicsByCategory = new Map<string, Topic[]>();
+  private readonly topicById = new Map<string, Topic>();
+  private readonly categoryById = new Map<string, Category>();
+  private readonly categoriesWithCounts: Category[];
+
+  constructor() {
+    for (const topic of this.topics) {
+      this.topicById.set(topic.id, topic);
+
+      const list = this.topicsByCategory.get(topic.categoryId);
+      if (list) {
+        list.push(topic);
+      } else {
+        this.topicsByCategory.set(topic.categoryId, [topic]);
+      }
+    }
+
+    for (const cat of CATEGORIES) {
+      this.categoryById.set(cat.id, cat);
+    }
+
+    this.categoriesWithCounts = CATEGORIES.map(cat => ({
       ...cat,
-      topicCount: this.topics.filter(t => t.categoryId === cat.id).length
+      topicCount: this.topicsByCategory.get(cat.id)?.length ?? 0,
     }));
   }
 
+  getCategories(): Category[] {
+    return this.categoriesWithCounts;
+  }
+
   getCategoryById(id: string): Category | undefined {
-    return this.categories.find(c => c.id === id);
+    return this.categoryById.get(id);
   }
 
   getFeaturedArticles(): FeaturedArticle[] {
-    return this.featuredArticles;
+    return FEATURED_ARTICLES;
   }
 
   getTopicsByCategory(categoryId: string): Topic[] {
-    return this.topics.filter(t => t.categoryId === categoryId);
+    return this.topicsByCategory.get(categoryId) ?? [];
   }
 
   getTopicById(id: string): Topic | undefined {
-    return this.topics.find(t => t.id === id);
+    return this.topicById.get(id);
   }
 
   getAllTopics(): Topic[] {

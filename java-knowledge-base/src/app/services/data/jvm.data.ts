@@ -8,27 +8,27 @@ export const JVM_TOPICS: Topic[] = [
       categoryId: 'jvm',
       icon: '🏛️',
       difficulty: 'Intermediate',
-      tags: ['JVM', 'Architecture', 'Bytecode', 'JIT', 'Class Loading'],
+      tags: ['JVM', 'Architecture', 'Bytecode', 'JIT', 'Class Loading', 'Execution Engine', 'Interpreter', 'Native Interface', 'Stack Machine'],
       content: [
         {
           heading: 'JVM Components',
-          body: 'The JVM has three main subsystems: 1) Class Loading Subsystem — loads, links, and initializes classes. 2) Runtime Data Areas — memory regions for program execution (Heap, Stack, Metaspace, PC Register, Native Method Stack). 3) Execution Engine — interprets bytecode or JIT-compiles to native code. Plus: Native Interface (JNI) for calling C/C++ code.'
+          body: 'The JVM has **three main subsystems**: 1) Class Loading Subsystem — loads, links, and initializes classes. 2) Runtime Data Areas — memory regions for program execution (Heap, Stack, Metaspace, PC Register, Native Method Stack). 3) Execution Engine — interprets bytecode or JIT-compiles to native code.\nPlus: **Native Interface** (JNI) for calling C/C++ code.'
         },
         {
           heading: 'Java Code Execution Flow',
-          body: '.java → javac → .class (bytecode) → ClassLoader → JVM execution. Bytecode is platform-independent instruction set for the JVM stack machine. Each .class file contains: magic number (0xCAFEBABE), version, constant pool, access flags, fields, methods (bytecode), and attributes. The JVM is a stack-based virtual machine (vs register-based like Dalvik/ART).'
+          body: '`.java` → `javac` → `.class` (bytecode) → ClassLoader → JVM execution.\nBytecode is a **platform-independent instruction set** for the JVM stack machine.\n\nEach `.class` file contains: magic number (`0xCAFEBABE`), version, constant pool, access flags, fields, methods (bytecode), and attributes.\nThe JVM is a **stack-based virtual machine** (*vs register-based like Dalvik/ART*).'
         },
         {
           heading: 'JIT Compilation',
-          body: 'The JVM starts by interpreting bytecode (slow but fast startup). Hot methods (frequently called) are compiled to native code by the JIT compiler (C1 for quick compilation, C2 for aggressive optimization). Tiered compilation (default since Java 8): Level 0 (interpreter) → Level 1-3 (C1 with profiling) → Level 4 (C2 optimized). JIT optimizations: inlining, loop unrolling, escape analysis, dead code elimination, lock coarsening.'
+          body: 'The JVM starts by **interpreting bytecode** (*slow but fast startup*). **Hot methods** (frequently called) are compiled to native code by the JIT compiler — *C1 for quick compilation, C2 for aggressive optimization*.\n\n**Tiered compilation** (default since Java 8): Level 0 (interpreter) → Level 1-3 (C1 with profiling) → Level 4 (C2 optimized).\n\nJIT optimizations: inlining, loop unrolling, escape analysis, dead code elimination, lock coarsening.'
         },
         {
           heading: 'GraalVM and AOT',
-          body: 'GraalVM: advanced JIT compiler written in Java (replaces C2), supports polyglot (JS, Python, Ruby). Native Image (AOT compilation): compiles Java ahead-of-time to standalone executables — instant startup, low memory, no JVM needed. Trade-offs: no dynamic class loading, reflection must be configured, no JIT optimizations at runtime. Ideal for serverless, CLI tools, and microservices (Spring Boot 3 supports native image).'
+          body: '**GraalVM**: advanced JIT compiler written in Java (replaces C2), supports polyglot (JS, Python, Ruby).\n\n**Native Image** (AOT compilation): compiles Java ahead-of-time to standalone executables — *instant startup, low memory, no JVM needed*.\n\nTrade-offs: no dynamic class loading, reflection must be configured, no JIT optimizations at runtime.\nIdeal for serverless, CLI tools, and microservices (*Spring Boot 3 supports native image*).'
         },
         {
           heading: 'Real-World Analogy',
-          body: 'Think of the JVM as a translator who reads instructions written in a universal language (bytecode) and executes them on the local machine. Your Java source code is like a document written in English. The compiler (javac) translates it into bytecode — a universal instruction manual any JVM can read. Each platform has its own JVM implementation (the local translator), so the same bytecode runs on Windows, Linux, or macOS without modification. The JIT compiler is like the translator learning shortcuts: after repeating the same paragraph many times, they memorize it and recite it at native speed instead of reading it word by word.'
+          body: 'Think of the JVM as a *translator* who reads instructions written in a universal language (bytecode) and executes them on the local machine.\n\nYour Java source code is like a document written in English. The compiler (`javac`) translates it into bytecode — a *universal instruction manual* any JVM can read.\n\nEach platform has its own JVM implementation (the local translator), so the same bytecode runs on Windows, Linux, or macOS without modification.\n\nThe JIT compiler is like the translator *learning shortcuts*: after repeating the same paragraph many times, they memorize it and recite it at native speed instead of reading it word by word.'
         }
       ],
       codeExamples: [
@@ -104,39 +104,39 @@ public int addStream(int[] arr) {
       categoryId: 'jvm',
       icon: '🧠',
       difficulty: 'Intermediate',
-      tags: ['Heap', 'Stack', 'Metaspace', 'Memory', 'PermGen'],
+      tags: ['Heap', 'Stack', 'Metaspace', 'Memory', 'PermGen', 'Young Generation', 'Old Generation', 'Eden', 'Survivor', 'Stack Frame'],
       content: [
         {
           heading: 'Heap (Shared)',
-          body: 'The heap stores all object instances and arrays, shared across all threads. Divided into: Young Generation (Eden + Survivor S0/S1) and Old Generation (Tenured). New objects are allocated in Eden. After surviving GC cycles, they move to Survivor spaces and eventually to Old Gen (tenuring). Configured with -Xms (initial) and -Xmx (maximum). Java 8+: String pool is on the heap (moved from PermGen in Java 7).'
+          body: 'The heap stores **all object instances and arrays**, shared across all threads.\nDivided into: **Young Generation** (Eden + Survivor S0/S1) and **Old Generation** (Tenured).\n\nNew objects are allocated in **Eden**. After surviving GC cycles, they move to Survivor spaces and eventually to Old Gen (*tenuring*).\n\nConfigured with `-Xms` (initial) and `-Xmx` (maximum).\nJava 8+: String pool is on the heap (*moved from PermGen in Java 7*).'
         },
         {
           heading: 'Stack (Per-Thread)',
-          body: 'Each thread has its own stack containing frames for method invocations. Each frame stores: local variables (array), operand stack (for computation), frame data (constant pool reference, exception table). Stack follows LIFO — frame pushed on method call, popped on return. Configured with -Xss (default ~512KB-1MB). StackOverflowError: too deep recursion. Stack memory is automatically reclaimed when the thread ends.'
+          body: 'Each thread has its own stack containing **frames** for method invocations.\nEach frame stores: local variables (array), operand stack (for computation), frame data (constant pool reference, exception table).\n\nStack follows **LIFO** — frame pushed on method call, popped on return.\nConfigured with `-Xss` (default ~512KB-1MB).\n\n`StackOverflowError`: too deep recursion. Stack memory is automatically reclaimed when the thread ends.'
         },
         {
           heading: 'Metaspace (Native Memory)',
-          body: 'Replaced PermGen in Java 8. Stores class metadata (class structure, method bytecode, constant pool, annotations), and static variables. Located in native memory (not heap) — grows dynamically by default. Configure with -XX:MaxMetaspaceSize to prevent unbounded growth. Metaspace OOM: too many loaded classes (common in app servers with frequent redeployments, or heavy reflection/bytecode generation).'
+          body: '**Replaced PermGen in Java 8.** Stores class metadata (class structure, method bytecode, constant pool, annotations), and static variables.\n\nLocated in **native memory** (not heap) — grows dynamically by default.\nConfigure with `-XX:MaxMetaspaceSize` to prevent unbounded growth.\n\nMetaspace OOM: too many loaded classes (*common in app servers with frequent redeployments, or heavy reflection/bytecode generation*).'
         },
         {
           heading: 'Program Counter & Native Method Stack',
-          body: 'PC Register (per-thread): holds address of current bytecode instruction being executed. Undefined for native methods. Native Method Stack (per-thread): stack for native (JNI) method calls. HotSpot JVM merges it with the Java stack. Direct Memory: off-heap memory allocated via ByteBuffer.allocateDirect() or Unsafe — used by NIO for zero-copy I/O. Not managed by GC — manual deallocation needed.'
+          body: '**PC Register** (per-thread): holds address of current bytecode instruction being executed. *Undefined for native methods.*\n\n**Native Method Stack** (per-thread): stack for native (JNI) method calls. HotSpot JVM merges it with the Java stack.\n\n**Direct Memory**: off-heap memory allocated via `ByteBuffer.allocateDirect()` or `Unsafe` — used by NIO for zero-copy I/O.\n*Not managed by GC — manual deallocation needed.*'
         },
         {
           heading: 'Common OOM Scenarios',
-          body: 'OutOfMemoryError: Java heap space — objects fill the heap (increase -Xmx or fix memory leak). OutOfMemoryError: Metaspace — too many classes loaded (increase -XX:MaxMetaspaceSize or fix classloader leak). StackOverflowError — infinite/deep recursion (increase -Xss or fix recursion). OutOfMemoryError: Direct buffer memory — too much direct ByteBuffer allocation. OutOfMemoryError: unable to create native thread — OS thread limit reached.'
+          body: '`OutOfMemoryError: Java heap space` — objects fill the heap (*increase `-Xmx` or fix memory leak*).\n\n`OutOfMemoryError: Metaspace` — too many classes loaded (*increase `-XX:MaxMetaspaceSize` or fix classloader leak*).\n\n`StackOverflowError` — infinite/deep recursion (*increase `-Xss` or fix recursion*).\n\n`OutOfMemoryError: Direct buffer memory` — too much direct ByteBuffer allocation.\n\n`OutOfMemoryError: unable to create native thread` — OS thread limit reached.'
         },
         {
           heading: 'Memory Leaks in Java',
-          body: 'Although Java has automatic garbage collection, memory leaks can still occur when objects are no longer needed but are still referenced, preventing GC from reclaiming them. Common causes: 1) Static collections that grow indefinitely — static fields live for the entire application lifetime. 2) Unclosed resources — connections, streams, or sessions that hold native memory. 3) Listeners/callbacks not deregistered — registered observers that are never removed. 4) ThreadLocal not cleaned in thread pools — values persist across task executions. 5) Classloader leaks in application servers — redeployed webapps retain references. Tools for identification: VisualVM, JProfiler, YourKit for profiling; Eclipse MAT (Memory Analyzer Tool) for analyzing heap dumps; jmap -histo for quick object histograms; JFR for ongoing monitoring.'
+          body: 'Although Java has automatic garbage collection, **memory leaks can still occur** when objects are no longer needed but are still referenced, preventing GC from reclaiming them.\n\nCommon causes: 1) Static collections that grow indefinitely — static fields live for the entire application lifetime. 2) Unclosed resources — connections, streams, or sessions that hold native memory. 3) Listeners/callbacks not deregistered — registered observers that are never removed. 4) ThreadLocal not cleaned in thread pools — values persist across task executions. 5) Classloader leaks in application servers — redeployed webapps retain references.\n\n**Tools for identification**: VisualVM, JProfiler, YourKit for profiling; Eclipse MAT (Memory Analyzer Tool) for analyzing heap dumps; `jmap -histo` for quick object histograms; JFR for ongoing monitoring.'
         },
         {
           heading: 'Static Keyword and Memory Impact',
-          body: 'Static fields and methods are stored in Metaspace (class metadata area), not on the heap with instance data. Static elements are created when the class is loaded and remain in memory as long as the class stays loaded — typically for the entire application lifecycle. This means static collections can accumulate data indefinitely if not managed. Static elements are shared among all instances of the class. Memory optimization: avoid storing large amounts of data in static fields unless truly needed as application-wide state; use weak references (WeakHashMap) for caches that should not prevent garbage collection.'
+          body: 'Static fields and methods are stored in **Metaspace** (class metadata area), *not on the heap* with instance data.\n\nStatic elements are created when the class is loaded and remain in memory as long as the class stays loaded — *typically for the entire application lifecycle*. This means static collections can accumulate data indefinitely if not managed.\n\nStatic elements are **shared among all instances** of the class.\n\n**Memory optimization**: avoid storing large amounts of data in static fields unless truly needed as application-wide state; use weak references (`WeakHashMap`) for caches that should not prevent garbage collection.'
         },
         {
           heading: 'Real-World Analogy',
-          body: 'The Heap is like a shared warehouse where all objects are stored — any worker (thread) can access items in the warehouse, but you need to coordinate access. When the warehouse is full and cannot be cleaned up, you get OutOfMemoryError (heap space). The Stack is like each worker\'s personal desk — it holds the notes (local variables) and task list (method call chain) for their current job. When a worker stacks too many tasks (deep recursion), the desk overflows: StackOverflowError. Metaspace is a filing cabinet of blueprints (class definitions) — every time the JVM loads a class, it files a blueprint. If you keep loading new classes without removing old ones (classloader leak), the filing cabinet runs out of space: OutOfMemoryError (Metaspace). The Program Counter is a bookmark each worker uses to remember where they are in the instruction manual.'
+          body: 'The **Heap** is like a *shared warehouse* where all objects are stored — any worker (thread) can access items in the warehouse, but you need to coordinate access. When the warehouse is full and cannot be cleaned up, you get `OutOfMemoryError` (heap space).\n\nThe **Stack** is like each worker\'s *personal desk* — it holds the notes (local variables) and task list (method call chain) for their current job. When a worker stacks too many tasks (deep recursion), the desk overflows: `StackOverflowError`.\n\n**Metaspace** is a *filing cabinet of blueprints* (class definitions) — every time the JVM loads a class, it files a blueprint. If you keep loading new classes without removing old ones (classloader leak), the filing cabinet runs out of space: `OutOfMemoryError` (Metaspace).\n\nThe **Program Counter** is a *bookmark* each worker uses to remember where they are in the instruction manual.'
         }
       ],
       codeExamples: [
@@ -219,31 +219,31 @@ public class MetaspaceOOM {
       categoryId: 'jvm',
       icon: '♻️',
       difficulty: 'Advanced',
-      tags: ['GC', 'G1', 'ZGC', 'Generational', 'Tuning'],
+      tags: ['GC', 'G1', 'ZGC', 'Generational', 'Tuning', 'Garbage Collection', 'CMS', 'Shenandoah', 'GC Roots', 'Mark-Sweep', 'Stop-The-World'],
       content: [
         {
           heading: 'Reachability Analysis & Reference Types',
-          body: 'Java uses reachability analysis (NOT reference counting) to determine which objects are garbage. Starting from GC Roots (local variables, static fields, JNI references, active threads), the GC traces all reachable objects. Unreachable objects are eligible for collection. This handles circular references (unlike reference counting in Python/Swift). Java has four reference types: 1) Strong references — normal references, never GC\'d while reachable. 2) Soft references (SoftReference) — GC\'d only when memory is low, ideal for caches. 3) Weak references (WeakReference) — GC\'d at the next collection cycle when no strong references exist, used for metadata/canonicalization maps. 4) Phantom references (PhantomReference) — for cleanup actions after GC, replaces finalize(). The finalize() method (deprecated since Java 9) was called by the GC before reclaiming an object — but timing was unpredictable and it could delay collection. Use Cleaner or try-with-resources instead.'
+          body: 'Java uses **reachability analysis** (NOT reference counting) to determine which objects are garbage.\nStarting from **GC Roots** (local variables, static fields, JNI references, active threads), the GC traces all reachable objects. Unreachable objects are eligible for collection.\n*This handles circular references (unlike reference counting in Python/Swift).*\n\nJava has **four reference types**: 1) Strong references — normal references, never GC\'d while reachable. 2) Soft references (`SoftReference`) — GC\'d only when memory is low, *ideal for caches*. 3) Weak references (`WeakReference`) — GC\'d at the next collection cycle when no strong references exist, *used for metadata/canonicalization maps*. 4) Phantom references (`PhantomReference`) — for cleanup actions after GC, *replaces `finalize()`*.\n\nThe `finalize()` method (*deprecated since Java 9*) was called by the GC before reclaiming an object — but timing was unpredictable and it could delay collection. Use `Cleaner` or try-with-resources instead.'
         },
         {
           heading: 'Generational Hypothesis',
-          body: 'Most objects die young. The heap is divided into Young Gen (Eden + Survivor S0/S1) and Old Gen. Minor GC (Young GC): collects Young Gen — fast, frequent. Major GC (Old GC): collects Old Gen — slower, less frequent. Full GC: collects entire heap — most expensive, often a performance red flag. Objects survive Minor GCs by copying between Survivor spaces and eventually get promoted (tenured) to Old Gen after a threshold (default 15 GC cycles).'
+          body: '**Most objects die young.** The heap is divided into **Young Gen** (Eden + Survivor S0/S1) and **Old Gen**.\n\n**Minor GC** (Young GC): collects Young Gen — *fast, frequent*.\n**Major GC** (Old GC): collects Old Gen — *slower, less frequent*.\n**Full GC**: collects entire heap — *most expensive, often a performance red flag*.\n\nObjects survive Minor GCs by copying between Survivor spaces and eventually get **promoted** (tenured) to Old Gen after a threshold (*default 15 GC cycles*).'
         },
         {
           heading: 'GC Algorithms',
-          body: 'Serial GC (-XX:+UseSerialGC): single-threaded, STW, good for small heaps/clients. Parallel GC (-XX:+UseParallelGC): multi-threaded throughput collector, targets high throughput. G1 (-XX:+UseG1GC, default since Java 9): region-based, targets pause time (-XX:MaxGCPauseMillis=200), good for heaps >4GB. ZGC (-XX:+UseZGC): ultra-low latency (<1ms pauses), handles multi-TB heaps, concurrent. Shenandoah: concurrent compaction like ZGC, available in OpenJDK.'
+          body: '**Serial GC** (`-XX:+UseSerialGC`): single-threaded, STW, *good for small heaps/clients*.\n\n**Parallel GC** (`-XX:+UseParallelGC`): multi-threaded throughput collector, *targets high throughput*.\n\n**G1** (`-XX:+UseG1GC`, default since Java 9): region-based, targets pause time (`-XX:MaxGCPauseMillis=200`), *good for heaps >4GB*.\n\n**ZGC** (`-XX:+UseZGC`): ultra-low latency (<1ms pauses), handles multi-TB heaps, *concurrent*.\n\n**Shenandoah**: concurrent compaction like ZGC, *available in OpenJDK*.'
         },
         {
           heading: 'G1 Collector Deep Dive',
-          body: 'G1 divides heap into equal-sized regions (1-32MB). Each region is Eden, Survivor, Old, or Humongous (for objects >50% region size). G1 maintains a priority queue of regions sorted by garbage amount — collects the "garbage-first" regions (hence the name). Remembered Sets track inter-region references. Mixed collections reclaim both young and old regions. Concurrent marking runs alongside application threads.'
+          body: 'G1 divides the heap into **equal-sized regions** (1-32MB). Each region is Eden, Survivor, Old, or **Humongous** (*for objects >50% region size*).\n\nG1 maintains a **priority queue** of regions sorted by garbage amount — collects the "garbage-first" regions (*hence the name*).\n\n**Remembered Sets** track inter-region references.\n**Mixed collections** reclaim both young and old regions.\n**Concurrent marking** runs alongside application threads.'
         },
         {
           heading: 'GC Tuning',
-          body: 'Step 1: Enable GC logging: `-Xlog:gc*:file=gc.log:time,level,tags` (Java 9+). Step 2: Analyze with tools (GCViewer, GCEasy.io). Key metrics: pause times, frequency, throughput (% time not in GC). Common issues: frequent Full GC (increase heap or fix leak), long pauses (switch to ZGC/Shenandoah), premature promotion (increase Young Gen ratio). Use JFR (Java Flight Recorder) for production profiling with minimal overhead.'
+          body: '**Step 1**: Enable GC logging — `-Xlog:gc*:file=gc.log:time,level,tags` (Java 9+).\n**Step 2**: Analyze with tools (GCViewer, GCEasy.io).\n\n**Key metrics**: pause times, frequency, throughput (% time not in GC).\n\nCommon issues: frequent Full GC (*increase heap or fix leak*), long pauses (*switch to ZGC/Shenandoah*), premature promotion (*increase Young Gen ratio*).\n\nUse **JFR** (Java Flight Recorder) for production profiling with *minimal overhead*.'
         },
         {
           heading: 'Real-World Analogy',
-          body: 'Think of GC as cleaning staff at an office. The Young Generation is like daily desk cleanup: every evening the janitor (Minor GC) clears away disposable cups and scratch paper (short-lived objects). Most trash is generated and collected here — fast and frequent. Items that people keep on their desks for weeks (surviving objects) get moved to a permanent storage room (Old Generation). The Old Generation deep clean is like a monthly warehouse cleanup (Major GC) — slower because there\'s more stuff and it\'s harder to tell what\'s still needed. A Full GC is like an emergency building-wide cleanout — everything stops while every room is inspected. G1 GC is like a smart janitor who prioritizes the messiest rooms first (garbage-first). ZGC is like a cleaning robot that works alongside employees without asking them to pause.'
+          body: 'Think of GC as *cleaning staff at an office*.\n\nThe **Young Generation** is like *daily desk cleanup*: every evening the janitor (Minor GC) clears away disposable cups and scratch paper (short-lived objects). Most trash is generated and collected here — fast and frequent.\n\nItems that people keep on their desks for weeks (surviving objects) get moved to a permanent storage room (**Old Generation**).\n\nThe Old Generation deep clean is like a *monthly warehouse cleanup* (Major GC) — slower because there\'s more stuff and it\'s harder to tell what\'s still needed.\n\nA **Full GC** is like an *emergency building-wide cleanout* — everything stops while every room is inspected.\n\n**G1 GC** is like a *smart janitor* who prioritizes the messiest rooms first (garbage-first).\n**ZGC** is like a *cleaning robot* that works alongside employees without asking them to pause.'
         }
       ],
       codeExamples: [
@@ -320,43 +320,43 @@ for (GarbageCollectorMXBean gc : ManagementFactory.getGarbageCollectorMXBeans())
       categoryId: 'jvm',
       icon: '📥',
       difficulty: 'Advanced',
-      tags: ['Class Loading', 'Linking', 'Initialization', 'ClassLoader'],
+      tags: ['Class Loading', 'Linking', 'Initialization', 'ClassLoader', 'Verification', 'Resolution', 'Static Initialization'],
       content: [
         {
           heading: 'Loading',
-          body: 'The ClassLoader reads the .class file (from filesystem, JAR, network, or dynamically generated) and creates a Class<?> object in Metaspace. The binary data is read into memory but not yet usable. Loading is lazy — a class is loaded only when first actively used (instantiation, static method/field access, reflection, or subclass loading).'
+          body: 'The ClassLoader reads the `.class` file (from filesystem, JAR, network, or dynamically generated) and creates a `Class<?>` object in Metaspace. The binary data is read into memory but *not yet usable*.\n\n**Loading is lazy** — a class is loaded only when first actively used (instantiation, static method/field access, reflection, or subclass loading).'
         },
         {
           heading: 'Linking: Verification',
-          body: 'Bytecode verification ensures the class file is structurally correct and won\'t violate JVM safety constraints. Checks: magic number (0xCAFEBABE), version compatibility, constant pool validity, bytecode instruction validity, type safety (stack map frames), access control. This prevents malicious or corrupted bytecode from crashing the JVM. Can be disabled with -Xverify:none (dangerous, only for trusted code in dev).'
+          body: '**Bytecode verification** ensures the class file is structurally correct and won\'t violate JVM safety constraints.\n\nChecks: magic number (`0xCAFEBABE`), version compatibility, constant pool validity, bytecode instruction validity, type safety (stack map frames), access control.\n\nThis prevents malicious or corrupted bytecode from crashing the JVM.\nCan be disabled with `-Xverify:none` (*dangerous, only for trusted code in dev*).'
         },
         {
           heading: 'Linking: Preparation & Resolution',
-          body: 'Preparation: allocates memory for static fields and sets them to default values (0, null, false — NOT the initializer value). Resolution: replaces symbolic references in the constant pool with direct references (memory addresses). This can be eager (at link time) or lazy (on first use). For example, a reference to "java/lang/String" is resolved to the actual String class object.'
+          body: '**Preparation**: allocates memory for static fields and sets them to **default values** (0, null, false — NOT the initializer value).\n\n**Resolution**: replaces symbolic references in the constant pool with **direct references** (memory addresses). This can be *eager* (at link time) or *lazy* (on first use).\nFor example, a reference to `java/lang/String` is resolved to the actual String class object.'
         },
         {
           heading: 'Initialization',
-          body: 'Executes the class initializer <clinit> — runs static initializers and static blocks in textual order. This is when static fields get their declared values. Initialization is guaranteed to happen exactly once and is thread-safe (the JVM holds a lock). A class is initialized when: first instance created, static method called, static field accessed (except compile-time constants), reflection, or subclass initialized.'
+          body: 'Executes the class initializer `<clinit>` — runs **static initializers** and **static blocks** in textual order. This is when static fields get their declared values.\n\nInitialization is guaranteed to happen **exactly once** and is **thread-safe** (*the JVM holds a lock*).\n\nA class is initialized when: first instance created, static method called, static field accessed (*except compile-time constants*), reflection, or subclass initialized.'
         },
         {
           heading: 'Class Loading Triggers',
-          body: 'Active use (triggers initialization): new, static field access/modification, static method call, reflection (Class.forName), subclass initialization, main class. Passive use (does NOT trigger initialization): accessing a compile-time constant (static final primitive/String), creating an array of the type, referencing the class via a child. This distinction is critical for understanding static block execution order in interviews.'
+          body: '**Active use** (triggers initialization): `new`, static field access/modification, static method call, reflection (`Class.forName`), subclass initialization, main class.\n\n**Passive use** (does NOT trigger initialization): accessing a compile-time constant (`static final` primitive/String), creating an array of the type, referencing the class via a child.\n\n*This distinction is critical for understanding static block execution order in interviews.*'
         },
         {
           heading: 'NoClassDefFoundError vs ClassNotFoundException',
-          body: 'ClassNotFoundException is a checked exception thrown when the JVM cannot find a class at runtime that was requested dynamically — typically via Class.forName(), ClassLoader.loadClass(), or ClassLoader.findSystemClass(). The class may never have been on the classpath. NoClassDefFoundError is an Error thrown when the JVM finds the class at compile time but cannot find or load it at runtime. Common causes: the class was present during compilation but missing from the runtime classpath, or a static initializer failed (ExceptionInInitializerError first, then NoClassDefFoundError on subsequent attempts). Key difference: ClassNotFoundException = class never found; NoClassDefFoundError = class was known but became unavailable or failed to initialize.'
+          body: '`ClassNotFoundException` is a **checked exception** thrown when the JVM cannot find a class at runtime that was requested dynamically — typically via `Class.forName()`, `ClassLoader.loadClass()`, or `ClassLoader.findSystemClass()`. *The class may never have been on the classpath.*\n\n`NoClassDefFoundError` is an **Error** thrown when the JVM finds the class at compile time but cannot find or load it at runtime. Common causes: the class was present during compilation but missing from the runtime classpath, or a static initializer failed (`ExceptionInInitializerError` first, then `NoClassDefFoundError` on subsequent attempts).\n\n**Key difference**: `ClassNotFoundException` = class never found; `NoClassDefFoundError` = class was known but became unavailable or failed to initialize.'
         },
         {
           heading: 'Class Unloading',
-          body: 'Java does not provide explicit control over class unloading. However, a class can be unloaded when its classloader is garbage collected. For a class to be eligible for unloading: 1) All instances of the class must be GC-eligible (no strong references). 2) The Class object itself must have no strong references. 3) The classloader that loaded the class must be GC-eligible. In practice, classes loaded by the Bootstrap, Platform, or Application classloaders are never unloaded. Custom classloaders (used by app servers, OSGi, hot-reload frameworks) enable class unloading when the entire classloader and its loaded classes become unreachable. This is why application servers can redeploy webapps — each webapp has its own classloader that can be discarded.'
+          body: 'Java does **not** provide explicit control over class unloading. However, a class can be unloaded when its classloader is garbage collected.\n\nFor a class to be eligible for unloading: 1) All instances of the class must be GC-eligible (no strong references). 2) The `Class` object itself must have no strong references. 3) The classloader that loaded the class must be GC-eligible.\n\nIn practice, classes loaded by the Bootstrap, Platform, or Application classloaders are **never unloaded**.\nCustom classloaders (*used by app servers, OSGi, hot-reload frameworks*) enable class unloading when the entire classloader and its loaded classes become unreachable.\n*This is why application servers can redeploy webapps — each webapp has its own classloader that can be discarded.*'
         },
         {
           heading: 'Class Loading and Memory Usage',
-          body: 'Every class loaded into the JVM consumes memory for its metadata (stored in Metaspace): the class structure, method bytecode, constant pool, field descriptors, and annotations. Loading many classes or using large libraries increases Metaspace consumption. In application servers with frequent redeployments, classloader leaks (where old classloaders are not GC\'d due to lingering references) can cause Metaspace exhaustion. Monitor with: -XX:MaxMetaspaceSize, jcmd <pid> GC.class_stats, and jmap -clstats <pid>. Proper classloader lifecycle management is critical in long-running applications.'
+          body: 'Every class loaded into the JVM consumes memory for its metadata (stored in **Metaspace**): the class structure, method bytecode, constant pool, field descriptors, and annotations.\nLoading many classes or using large libraries increases Metaspace consumption.\n\nIn application servers with frequent redeployments, **classloader leaks** (where old classloaders are not GC\'d due to lingering references) can cause Metaspace exhaustion.\n\nMonitor with: `-XX:MaxMetaspaceSize`, `jcmd <pid> GC.class_stats`, and `jmap -clstats <pid>`.\n*Proper classloader lifecycle management is critical in long-running applications.*'
         },
         {
           heading: 'Why This Matters',
-          body: 'Understanding class loading is crucial in several practical scenarios: 1) Hot reload / Dev tools — frameworks like Spring DevTools create new classloaders to reload changed classes without restarting the JVM; this only works if you understand that a class is identified by both its name AND its classloader. 2) Plugin systems — IDEs like IntelliJ and servers like Tomcat use separate classloaders per plugin/webapp to isolate dependencies and allow independent upgrades. 3) Testing — mocking frameworks (Mockito, ByteBuddy) dynamically generate subclasses at runtime; understanding class loading helps debug "ClassNotFoundException" or "NoClassDefFoundError" in tests. 4) Dependency conflicts — "JAR hell" occurs when the same class exists in multiple JARs and the wrong version is loaded first. 5) Memory leaks — classloader leaks in application servers occur when a redeployed webapp retains references that prevent its classloader (and all its classes) from being garbage collected.'
+          body: 'Understanding class loading is crucial in several practical scenarios: 1) Hot reload / Dev tools — frameworks like Spring DevTools create new classloaders to reload changed classes without restarting the JVM; *this only works if you understand that a class is identified by both its name AND its classloader*. 2) Plugin systems — IDEs like IntelliJ and servers like Tomcat use separate classloaders per plugin/webapp to isolate dependencies and allow independent upgrades. 3) Testing — mocking frameworks (Mockito, ByteBuddy) dynamically generate subclasses at runtime; understanding class loading helps debug `ClassNotFoundException` or `NoClassDefFoundError` in tests. 4) Dependency conflicts — "JAR hell" occurs when the same class exists in multiple JARs and the wrong version is loaded first. 5) Memory leaks — classloader leaks in application servers occur when a redeployed webapp retains references that prevent its classloader (and all its classes) from being garbage collected.'
         }
       ],
       codeExamples: [
@@ -433,23 +433,23 @@ public class ClassLoaderBreakDemo {
       categoryId: 'jvm',
       icon: '🔄',
       difficulty: 'Advanced',
-      tags: ['ClassLoader', 'Parent Delegation', 'Bootstrap', 'Custom ClassLoader'],
+      tags: ['ClassLoader', 'Parent Delegation', 'Bootstrap', 'Custom ClassLoader', 'Application ClassLoader', 'Extension ClassLoader', 'Class Isolation'],
       content: [
         {
           heading: 'ClassLoader Hierarchy',
-          body: 'Bootstrap ClassLoader: loads core Java classes (java.lang.*, java.util.*) from <JAVA_HOME>/lib. Written in C/C++, returns null as classloader. Platform ClassLoader (formerly Extension): loads platform-specific classes. Application ClassLoader: loads classes from classpath (-cp, CLASSPATH). Each classloader has a parent — forms a tree hierarchy.'
+          body: '**Bootstrap ClassLoader**: loads core Java classes (`java.lang.*`, `java.util.*`) from `<JAVA_HOME>/lib`. *Written in C/C++, returns null as classloader.*\n\n**Platform ClassLoader** (*formerly Extension*): loads platform-specific classes.\n\n**Application ClassLoader**: loads classes from classpath (`-cp`, `CLASSPATH`).\n\nEach classloader has a parent — forms a **tree hierarchy**.'
         },
         {
           heading: 'Parent Delegation Model',
-          body: 'When a classloader receives a load request: 1) Check if already loaded (cache). 2) Delegate to parent classloader. 3) Parent delegates to its parent (recursively up to Bootstrap). 4) If parent cannot load, the current classloader tries itself. This ensures core Java classes are always loaded by Bootstrap (security — prevents replacing java.lang.String). If no classloader can find the class → ClassNotFoundException.'
+          body: 'When a classloader receives a load request: 1) Check if already loaded (cache). 2) Delegate to parent classloader. 3) Parent delegates to its parent (recursively up to Bootstrap). 4) If parent cannot load, the current classloader tries itself.\n\nThis ensures core Java classes are **always loaded by Bootstrap** (*security — prevents replacing `java.lang.String`*).\nIf no classloader can find the class → `ClassNotFoundException`.'
         },
         {
           heading: 'Breaking Parent Delegation',
-          body: 'Some frameworks break parent delegation: Thread Context ClassLoader (TCCL) — allows SPI implementations to load classes visible to the application (e.g., JDBC drivers loaded by Bootstrap need to see driver implementations on classpath). OSGi: each bundle has its own classloader with explicit import/export. Tomcat: web applications load their own classes first (reverse delegation for WEB-INF/classes), then parent.'
+          body: 'Some frameworks **break parent delegation**:\n\n**Thread Context ClassLoader** (TCCL) — allows SPI implementations to load classes visible to the application (*e.g., JDBC drivers loaded by Bootstrap need to see driver implementations on classpath*).\n\n**OSGi**: each bundle has its own classloader with explicit import/export.\n\n**Tomcat**: web applications load their own classes first (*reverse delegation for WEB-INF/classes*), then parent.'
         },
         {
           heading: 'Custom ClassLoader',
-          body: 'Extend ClassLoader, override findClass(String name). Use cases: loading classes from non-standard sources (database, network, encrypted), hot-reloading (create new classloader instance), isolation (multiple versions of same class). Two classes loaded by different classloaders are different types — even with same bytecode. This is why application server ClassCastExceptions occur across modules.'
+          body: 'Extend `ClassLoader`, override `findClass(String name)`.\n\nUse cases: loading classes from non-standard sources (database, network, encrypted), hot-reloading (create new classloader instance), isolation (multiple versions of same class).\n\n**Two classes loaded by different classloaders are different types** — *even with same bytecode*.\nThis is why application server `ClassCastException`s occur across modules.'
         }
       ],
       codeExamples: [
@@ -499,23 +499,23 @@ ServiceLoader.load(MyService.class, tccl);`
       categoryId: 'jvm',
       icon: '🔬',
       difficulty: 'Advanced',
-      tags: ['jstack', 'jmap', 'jstat', 'JFR', 'Monitoring', 'Troubleshooting'],
+      tags: ['jstack', 'jmap', 'jstat', 'JFR', 'Monitoring', 'Troubleshooting', 'Thread Dump', 'Heap Dump', 'VisualVM', 'Profiling'],
       content: [
         {
           heading: 'Process Tools',
-          body: 'jps: list JVM processes with PIDs. jcmd: Swiss army knife — thread dump, heap dump, GC info, VM flags, JFR control. jinfo: view/modify JVM flags at runtime. These are the first tools to reach for when troubleshooting a production JVM.'
+          body: '`jps`: list JVM processes with PIDs.\n`jcmd`: *Swiss army knife* — thread dump, heap dump, GC info, VM flags, JFR control.\n`jinfo`: view/modify JVM flags at runtime.\n\n*These are the first tools to reach for when troubleshooting a production JVM.*'
         },
         {
           heading: 'Thread Analysis',
-          body: 'jstack <pid>: capture thread dump — shows all threads, their states, and stack traces. Use for diagnosing: deadlocks (jstack reports detected deadlocks), high CPU threads (correlate with `top -H -p <pid>`), thread leaks. Take 3-5 dumps 5-10 seconds apart to identify threads stuck at the same point. `kill -3 <pid>` also generates a thread dump to stdout.'
+          body: '`jstack <pid>`: capture thread dump — shows all threads, their states, and stack traces.\n\nUse for diagnosing: **deadlocks** (`jstack` reports detected deadlocks), **high CPU threads** (correlate with `top -H -p <pid>`), **thread leaks**.\n\nTake **3-5 dumps 5-10 seconds apart** to identify threads stuck at the same point.\n`kill -3 <pid>` also generates a thread dump to stdout.'
         },
         {
           heading: 'Memory Analysis',
-          body: 'jmap -heap <pid>: heap summary (GC algorithm, generation sizes). jmap -histo <pid>: histogram of object counts and sizes. jmap -dump:format=b,file=dump.hprof <pid>: full heap dump. Analyze heap dumps with Eclipse MAT (Memory Analyzer Tool) — find leak suspects, dominator tree, histogram. jstat -gc <pid> 1000: GC statistics every second (heap usage, GC counts, GC times).'
+          body: '`jmap -heap <pid>`: heap summary (GC algorithm, generation sizes).\n`jmap -histo <pid>`: histogram of object counts and sizes.\n`jmap -dump:format=b,file=dump.hprof <pid>`: full heap dump.\n\nAnalyze heap dumps with **Eclipse MAT** (Memory Analyzer Tool) — find leak suspects, dominator tree, histogram.\n\n`jstat -gc <pid> 1000`: GC statistics every second (heap usage, GC counts, GC times).'
         },
         {
           heading: 'Java Flight Recorder (JFR)',
-          body: 'JFR is the gold standard for production profiling — <2% overhead. Records events: method profiling, GC activity, thread states, I/O, allocations, locks. Start: `jcmd <pid> JFR.start duration=60s filename=rec.jfr` or JVM flag `-XX:StartFlightRecording`. Analyze with JDK Mission Control (JMC) GUI or `jfr` CLI tool. Available in all OpenJDK distributions since Java 11 (was commercial-only in Oracle JDK 8).'
+          body: '**JFR is the gold standard** for production profiling — *<2% overhead*.\n\nRecords events: method profiling, GC activity, thread states, I/O, allocations, locks.\n\nStart: `jcmd <pid> JFR.start duration=60s filename=rec.jfr` or JVM flag `-XX:StartFlightRecording`.\nAnalyze with **JDK Mission Control** (JMC) GUI or `jfr` CLI tool.\n\n*Available in all OpenJDK distributions since Java 11 (was commercial-only in Oracle JDK 8).*'
         }
       ],
       codeExamples: [
@@ -564,31 +564,31 @@ ServiceLoader.load(MyService.class, tccl);`
       categoryId: 'jvm',
       icon: '⚙️',
       difficulty: 'Intermediate',
-      tags: ['JVM Parameters', 'Xmx', 'Xms', 'GC Flags', 'Tuning'],
+      tags: ['JVM Parameters', 'Xmx', 'Xms', 'GC Flags', 'Tuning', 'Performance', 'Memory Configuration', 'JVM Options'],
       content: [
         {
           heading: 'Memory Parameters',
-          body: '-Xms: initial heap size (-Xms2g). -Xmx: maximum heap size (-Xmx4g). Best practice: set -Xms = -Xmx in production (avoids resize pauses). -Xss: thread stack size (-Xss1m). -XX:MaxMetaspaceSize: metaspace limit (-XX:MaxMetaspaceSize=256m). -XX:MaxDirectMemorySize: NIO direct buffer limit.'
+          body: '`-Xms`: initial heap size (`-Xms2g`).\n`-Xmx`: maximum heap size (`-Xmx4g`).\n**Best practice**: set `-Xms` = `-Xmx` in production (*avoids resize pauses*).\n\n`-Xss`: thread stack size (`-Xss1m`).\n`-XX:MaxMetaspaceSize`: metaspace limit (`-XX:MaxMetaspaceSize=256m`).\n`-XX:MaxDirectMemorySize`: NIO direct buffer limit.'
         },
         {
           heading: 'GC Parameters',
-          body: '-XX:+UseG1GC (default since Java 9), -XX:+UseZGC, -XX:+UseParallelGC. -XX:MaxGCPauseMillis=200 (G1 target pause). -XX:G1HeapRegionSize=16m. -XX:ParallelGCThreads=N. -XX:ConcGCThreads=N. -XX:+ZGenerational (Java 21+ generational ZGC).'
+          body: '`-XX:+UseG1GC` (*default since Java 9*), `-XX:+UseZGC`, `-XX:+UseParallelGC`.\n\n`-XX:MaxGCPauseMillis=200` (G1 target pause).\n`-XX:G1HeapRegionSize=16m`.\n`-XX:ParallelGCThreads=N`.\n`-XX:ConcGCThreads=N`.\n`-XX:+ZGenerational` (*Java 21+ generational ZGC*).'
         },
         {
           heading: 'Debugging Parameters',
-          body: '-XX:+HeapDumpOnOutOfMemoryError: auto heap dump on OOM. -XX:HeapDumpPath=/path: dump location. -XX:OnOutOfMemoryError="kill -9 %p": action on OOM. -XX:+ExitOnOutOfMemoryError: terminate JVM on OOM. -Xlog:gc*:file=gc.log:time,level,tags: unified GC logging (Java 9+). -XX:+PrintFlagsFinal: print all JVM flags.'
+          body: '`-XX:+HeapDumpOnOutOfMemoryError`: auto heap dump on OOM.\n`-XX:HeapDumpPath=/path`: dump location.\n`-XX:OnOutOfMemoryError="kill -9 %p"`: action on OOM.\n`-XX:+ExitOnOutOfMemoryError`: terminate JVM on OOM.\n\n`-Xlog:gc*:file=gc.log:time,level,tags`: unified GC logging (*Java 9+*).\n`-XX:+PrintFlagsFinal`: print all JVM flags.'
         },
         {
           heading: 'Performance Parameters',
-          body: '-XX:+UseCompressedOops (default for <32GB heaps): compress object references from 8 to 4 bytes. -XX:+UseStringDeduplication (G1 only): deduplicate String char arrays. -XX:+TieredCompilation (default): C1→C2 compilation. -XX:ReservedCodeCacheSize=256m: space for JIT-compiled code. -XX:+AlwaysPreTouch: commit heap memory at startup (avoids page faults).'
+          body: '`-XX:+UseCompressedOops` (*default for <32GB heaps*): compress object references from 8 to 4 bytes.\n`-XX:+UseStringDeduplication` (*G1 only*): deduplicate String char arrays.\n`-XX:+TieredCompilation` (*default*): C1→C2 compilation.\n`-XX:ReservedCodeCacheSize=256m`: space for JIT-compiled code.\n`-XX:+AlwaysPreTouch`: commit heap memory at startup (*avoids page faults*).'
         },
         {
           heading: 'Container Parameters',
-          body: 'Java 10+ is container-aware — respects cgroup memory/CPU limits. -XX:MaxRAMPercentage=75.0: use 75% of container memory as max heap (better than -Xmx in containers). -XX:InitialRAMPercentage=50.0. -XX:+UseContainerSupport (default). -XX:ActiveProcessorCount=N: override detected CPU count.'
+          body: 'Java 10+ is **container-aware** — respects cgroup memory/CPU limits.\n\n`-XX:MaxRAMPercentage=75.0`: use 75% of container memory as max heap (*better than `-Xmx` in containers*).\n`-XX:InitialRAMPercentage=50.0`.\n`-XX:+UseContainerSupport` (*default*).\n`-XX:ActiveProcessorCount=N`: override detected CPU count.'
         },
         {
           heading: 'Quick Reference Guide',
-          body: 'MEMORY: -Xms/-Xmx (heap), -Xss (stack), -XX:MaxMetaspaceSize, -XX:MaxDirectMemorySize, -XX:MaxRAMPercentage (containers). GC SELECTION: -XX:+UseG1GC (balanced, default), -XX:+UseZGC (low latency), -XX:+UseParallelGC (throughput). GC TUNING: -XX:MaxGCPauseMillis (G1 target), -XX:G1HeapRegionSize, -XX:ParallelGCThreads, -XX:+UseStringDeduplication. DIAGNOSTICS: -XX:+HeapDumpOnOutOfMemoryError, -XX:HeapDumpPath, -Xlog:gc*, -XX:+ExitOnOutOfMemoryError. PERFORMANCE: -XX:+UseCompressedOops, -XX:+AlwaysPreTouch, -XX:ReservedCodeCacheSize, -XX:+TieredCompilation. CONTAINER: -XX:MaxRAMPercentage=75.0, -XX:+UseContainerSupport, -XX:ActiveProcessorCount. Rule of thumb: set -Xms = -Xmx in production, use G1 by default, enable heap dump on OOM, and use -XX:MaxRAMPercentage in containers instead of -Xmx.'
+          body: '**MEMORY**: `-Xms`/`-Xmx` (heap), `-Xss` (stack), `-XX:MaxMetaspaceSize`, `-XX:MaxDirectMemorySize`, `-XX:MaxRAMPercentage` (containers).\n\n**GC SELECTION**: `-XX:+UseG1GC` (balanced, default), `-XX:+UseZGC` (low latency), `-XX:+UseParallelGC` (throughput).\n\n**GC TUNING**: `-XX:MaxGCPauseMillis` (G1 target), `-XX:G1HeapRegionSize`, `-XX:ParallelGCThreads`, `-XX:+UseStringDeduplication`.\n\n**DIAGNOSTICS**: `-XX:+HeapDumpOnOutOfMemoryError`, `-XX:HeapDumpPath`, `-Xlog:gc*`, `-XX:+ExitOnOutOfMemoryError`.\n\n**PERFORMANCE**: `-XX:+UseCompressedOops`, `-XX:+AlwaysPreTouch`, `-XX:ReservedCodeCacheSize`, `-XX:+TieredCompilation`.\n\n**CONTAINER**: `-XX:MaxRAMPercentage=75.0`, `-XX:+UseContainerSupport`, `-XX:ActiveProcessorCount`.\n\n*Rule of thumb*: set `-Xms` = `-Xmx` in production, use G1 by default, enable heap dump on OOM, and use `-XX:MaxRAMPercentage` in containers instead of `-Xmx`.'
         }
       ],
       codeExamples: [

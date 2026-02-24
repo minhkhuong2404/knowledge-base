@@ -1,93 +1,160 @@
 <section class="hero">
-  <div class="container">
-    <div class="hero-content">
+  <div class="container-xl">
+    <div class="hero-content mx-auto text-center">
       <h1>Java Knowledge Base</h1>
       <p class="hero-subtitle">
         Your comprehensive resource for mastering Java — from core fundamentals to advanced frameworks.
       </p>
+      <a routerLink="/category/core-java" mat-flat-button class="hero-cta">
+        Start Learning
+        <i class="fa-solid fa-arrow-right"></i>
+      </a>
     </div>
   </div>
 </section>
 
 <section class="featured-section">
-  <div class="container">
+  <div class="container-xl">
     <h2 class="section-title">Newly Released Content</h2>
-    <div class="featured-grid">
+    <div class="row g-3">
       @for (article of featuredArticles; track article.id) {
-        <a [routerLink]="['/topic', article.topicId]" class="featured-card">
-          <span class="featured-tag">{{ article.tag }}</span>
-          <h3 class="featured-title">{{ article.title }}</h3>
-          <p class="featured-summary">{{ article.summary }}</p>
-          <span class="featured-author">{{ article.author }}</span>
-        </a>
+        <div class="col-12 col-sm-6 col-lg-4">
+          <a [routerLink]="['/topic', article.topicId]" class="featured-card-link d-block h-100">
+            <mat-card appearance="outlined" class="featured-card h-100">
+              <mat-card-content class="d-flex flex-column h-100">
+                <span class="featured-tag">{{ article.tag }}</span>
+                <h3 class="featured-title">{{ article.title }}</h3>
+                <p class="featured-summary flex-grow-1">{{ article.summary }}</p>
+                <span class="featured-author d-flex align-items-center gap-1">
+                  <i class="fa-solid fa-user author-icon"></i>
+                  {{ article.author }}
+                </span>
+              </mat-card-content>
+            </mat-card>
+          </a>
+        </div>
       }
     </div>
   </div>
 </section>
 
-<section class="categories-section">
-  <div class="container">
-    <h2 class="section-title">Learn Java</h2>
-    <p class="section-desc">Explore topics organized by category. Click a category to browse all topics.</p>
-    <div class="categories-grid">
-      @for (category of categories; track category.id) {
-        <a [routerLink]="['/category', category.id]" class="category-card" [style.border-left-color]="category.color">
-          <div class="category-icon">{{ category.icon }}</div>
-          <div class="category-info">
-            <h3 class="category-name">{{ category.name }}</h3>
-            <p class="category-desc">{{ category.description }}</p>
-            <span class="category-count">{{ category.topicCount }} topics</span>
+@defer (on viewport) {
+  <section class="categories-section">
+    <div class="container-xl">
+      <h2 class="section-title">Learn Java</h2>
+      <p class="section-desc">Explore topics organized by category. Click a category to browse all topics.</p>
+      <div class="row g-3">
+        @for (category of categories; track category.id) {
+          <div class="col-12 col-md-6">
+            <a [routerLink]="['/category', category.id]" class="category-card-link d-block">
+              <mat-card appearance="outlined" class="category-card" [style.--accent-color]="category.color">
+                <mat-card-content class="d-flex align-items-start gap-3">
+                  <div class="category-icon flex-shrink-0">{{ category.icon }}</div>
+                  <div class="category-info">
+                    <h3 class="category-name">{{ category.name }}</h3>
+                    <p class="category-desc">{{ category.description }}</p>
+                    <div class="category-meta d-flex align-items-center gap-1">
+                      <i class="fa-solid fa-file-lines meta-icon"></i>
+                      <span class="category-count">{{ category.topicCount }} topics</span>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </a>
           </div>
-        </a>
-      }
+        }
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+} @placeholder {
+  <div style="min-height: 200px"></div>
+}
 
-<section class="topics-section">
-  <div class="container">
-    <h2 class="section-title">Popular Topics</h2>
-    <div class="topics-grid">
-      @for (topic of recentTopics; track topic.id) {
-        <a [routerLink]="['/topic', topic.id]" class="topic-card">
-          <div class="topic-header">
-            <span class="topic-icon">{{ topic.icon }}</span>
-            <span class="topic-difficulty" [class]="getDifficultyClass(topic.difficulty)">{{ topic.difficulty }}</span>
+@defer (on viewport) {
+  <section class="topics-section">
+    <div class="container-xl">
+      <h2 class="section-title">Popular Topics</h2>
+      <div class="row g-3">
+        @for (topic of recentTopics; track topic.id) {
+          <div class="col-12 col-sm-6 col-lg-4">
+            <a [routerLink]="['/topic', topic.id]" class="topic-card-link d-block h-100">
+              <mat-card appearance="outlined" class="topic-card h-100">
+                <mat-card-content>
+                  <div class="topic-header d-flex justify-content-between align-items-center mb-2">
+                    <span class="topic-icon">{{ topic.icon }}</span>
+                    <mat-chip [class]="getDifficultyClass(topic.difficulty)" highlighted>
+                      <i [class]="getDifficultyIcon(topic.difficulty)"></i>
+                      {{ topic.difficulty }}
+                    </mat-chip>
+                  </div>
+                  <h3 class="topic-title">{{ topic.title }}</h3>
+                  <p class="topic-desc">{{ topic.description }}</p>
+                  <div class="topic-tags d-flex flex-wrap gap-1">
+                    @for (tag of topic.tags.slice(0, 3); track tag) {
+                      <mat-chip class="tag-chip">{{ tag }}</mat-chip>
+                    }
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </a>
           </div>
-          <h3 class="topic-title">{{ topic.title }}</h3>
-          <p class="topic-desc">{{ topic.description }}</p>
-          <div class="topic-tags">
-            @for (tag of topic.tags.slice(0, 3); track tag) {
-              <span class="tag">{{ tag }}</span>
-            }
-          </div>
-        </a>
-      }
+        }
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+} @placeholder {
+  <div style="min-height: 200px"></div>
+}
 
-<section class="quick-links-section">
-  <div class="container">
-    <div class="quick-links-grid">
-      <div class="quick-links-column">
-        <h3>Core Language</h3>
-        <a routerLink="/category/core-java">Core Java</a>
-        <a routerLink="/category/collections">Collections Framework</a>
-        <a routerLink="/category/io">Java I/O</a>
-      </div>
-      <div class="quick-links-column">
-        <h3>Advanced Topics</h3>
-        <a routerLink="/category/concurrency">Concurrency & Multithreading</a>
-        <a routerLink="/category/jvm">JVM Internals</a>
-        <a routerLink="/category/new-features">Java New Features</a>
-      </div>
-      <div class="quick-links-column">
-        <h3>Frameworks & Interview</h3>
-        <a routerLink="/category/spring">Spring Framework</a>
-        <a routerLink="/category/design-patterns">Design Patterns</a>
-        <a routerLink="/category/interview-qa">Interview Essentials</a>
+@defer (on viewport) {
+  <section class="quick-links-section">
+    <div class="container-xl">
+      <div class="row g-4">
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="quick-links-column">
+            <h3>Core Language</h3>
+            <a routerLink="/category/core-java">
+              <i class="fa-solid fa-chevron-right"></i> Core Java
+            </a>
+            <a routerLink="/category/collections">
+              <i class="fa-solid fa-chevron-right"></i> Collections Framework
+            </a>
+            <a routerLink="/category/io">
+              <i class="fa-solid fa-chevron-right"></i> Java I/O
+            </a>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="quick-links-column">
+            <h3>Advanced Topics</h3>
+            <a routerLink="/category/concurrency">
+              <i class="fa-solid fa-chevron-right"></i> Concurrency &amp; Multithreading
+            </a>
+            <a routerLink="/category/jvm">
+              <i class="fa-solid fa-chevron-right"></i> JVM Internals
+            </a>
+            <a routerLink="/category/new-features">
+              <i class="fa-solid fa-chevron-right"></i> Java New Features
+            </a>
+          </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4">
+          <div class="quick-links-column">
+            <h3>Frameworks &amp; Interview</h3>
+            <a routerLink="/category/spring">
+              <i class="fa-solid fa-chevron-right"></i> Spring Framework
+            </a>
+            <a routerLink="/category/design-patterns">
+              <i class="fa-solid fa-chevron-right"></i> Design Patterns
+            </a>
+            <a routerLink="/category/interview-qa">
+              <i class="fa-solid fa-chevron-right"></i> Interview Essentials
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+} @placeholder {
+  <div style="min-height: 100px"></div>
+}

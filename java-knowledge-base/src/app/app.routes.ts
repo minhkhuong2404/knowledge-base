@@ -1,13 +1,9 @@
 import { Routes } from '@angular/router';
-import { Home } from './pages/home/home';
-import { CategoryComponent } from './pages/category/category';
-import { TopicDetail } from './pages/topic-detail/topic-detail';
-import { SearchResults } from './pages/search-results/search-results';
 
 export const routes: Routes = [
-  { path: '', component: Home },
-  { path: 'category/:id', component: CategoryComponent },
-  { path: 'topic/:id', component: TopicDetail },
-  { path: 'search', component: SearchResults },
-  { path: '**', redirectTo: '' }
+  { path: '', loadComponent: () => import('./pages/home/home').then(m => m.Home) },
+  { path: 'category/:id', loadComponent: () => import('./pages/category/category').then(m => m.CategoryComponent) },
+  { path: 'topic/:id', loadComponent: () => import('./pages/topic-detail/topic-detail').then(m => m.TopicDetail) },
+  { path: 'search', loadComponent: () => import('./pages/search-results/search-results').then(m => m.SearchResults) },
+  { path: '**', redirectTo: '' },
 ];
